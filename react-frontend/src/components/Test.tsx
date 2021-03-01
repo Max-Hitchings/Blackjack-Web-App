@@ -4,9 +4,8 @@ import { Link } from "react-router-dom";
 export default function Test() {
   return (
     <div>
-      Am i here?
       <Link to="./">
-        <button color="secondary"></button>
+        <button>sdsd</button>
       </Link>
     </div>
   );
