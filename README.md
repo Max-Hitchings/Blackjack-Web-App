@@ -2,7 +2,7 @@
 
 ## Stack
 
-| Tech | Provider |
+| Tech | Host |
 | ------ | ------ |
 | React | Netlify |
 | Django | AWS |
