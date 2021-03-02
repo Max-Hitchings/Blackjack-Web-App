@@ -11,7 +11,7 @@
 
 ## To-Do
 
-- [ ]  Landing page
+- [x]  Landing page
 - [ ]  DB for rooms
 - [ ]  Ability to join rooms
 - [ ]  Room page
