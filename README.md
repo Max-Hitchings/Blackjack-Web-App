@@ -7,7 +7,6 @@
 | React | Netlify |
 | Django | AWS |
 | PostgreSQL | AWS RDS |
-| Chakra UI | |
 
 ## To-Do
 
