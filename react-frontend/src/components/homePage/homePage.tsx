@@ -8,7 +8,6 @@ interface homePageProps {}
 export const homePage: React.FC<homePageProps> = () => {
   return (
     <div className="homePageWrapper pokerBackground">
-      <Link to="/test"></Link>
       <MainMenu />
     </div>
   );
