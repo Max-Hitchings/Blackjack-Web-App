@@ -11,9 +11,9 @@
 
 ## To-Do
 
-- [ ]  Landing page
+- [x]  Landing page
 - [ ]  DB for rooms
-- [ ]  Ability to join rooms
+- [ ]  Ability to join/create rooms
 - [ ]  Room page
 - [ ]  Backend card system
 - [ ]  Dispatch cards to all users (Web Sockets??)
