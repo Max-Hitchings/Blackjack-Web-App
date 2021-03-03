@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import GameSerializer, CreateGameSerializer
+from .serializers import GameSerializer, CreateGameSerializer, GetGameCodeSerializer
 from .models import Games
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -35,11 +35,11 @@ def createGame(request):
     host_id = request.session.session_key
     is_host_a_host = Games.objects.filter(host_id = host_id)
     if is_host_a_host.exists():
-        return Response({'Bad Request': 'User already a host of a different room'}, status.HTTP_400_BAD_REQUEST)
+        return Response({'Bad Request': 'User already a host of a different room'}, status.HTTP_409_CONFLICT)
     else:
         new_game = Games(host_id=host_id)
         new_game.save()
-        return Response({'Game Created': 'Sucsess'}, status.HTTP_201_CREATED)
+        return Response(GetGameCodeSerializer(new_game).data, status.HTTP_201_CREATED)
     return Response({'Bad Request': 'Invalid request'}, status.HTTP_400_BAD_REQUEST)
 
 

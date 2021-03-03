@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import viewGames, viewGame, createGame, updateGame, deleteGame
 from . import views
-# max do as_view() not as_view REMEMBER THE () PLEASE
+
 urlpatterns = [
     path("view-game/<str:id>", views.viewGame, name="game"),
     path("view-games/", views.viewGames, name="games"),

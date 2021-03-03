@@ -1,24 +1,19 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
+import history from "../../history";
 
 export default function MainMenu() {
   const handleCreateGame = () => {
     fetch("/api/create-game/", { method: "post" })
-      .then((response) => {
-        console.log(response);
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson.data);
+        //return history.push("/game/hi");
       })
       .catch((error) => {
         console.error(error);
       });
-
-    //axios
-    //  .post("http://127.0.0.1:8000/api/create-game/")
-    //  .then((response) => {
-    //    console.log(response);
-    //  })
-    //  .catch((error) => {
-    //    console.error(error);
-    //  });
   };
 
   return (

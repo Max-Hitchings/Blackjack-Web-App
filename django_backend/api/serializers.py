@@ -10,3 +10,8 @@ class CreateGameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Games
         fields = ('host_id',)
+
+class GetGameCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Games
+        fields = ('game_code',)
