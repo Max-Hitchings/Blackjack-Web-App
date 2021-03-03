@@ -24,7 +24,7 @@ SECRET_KEY = 'b4&&k(^^l!)%h7ai@_ol3k)%zac13*x73)gc(j$^-r6+ulcs79'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["http://127.0.0.1:3000","127.0.0.1","http://127.0.0.1:8000"]
+ALLOWED_HOSTS = ["http://127.0.0.1:3000","127.0.0.1","localhost","http://127.0.0.1:8000"]
 
 CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:3000",

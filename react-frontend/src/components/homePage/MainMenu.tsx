@@ -1,12 +1,9 @@
 import React from "react";
-import { Button, ButtonGroup } from "@chakra-ui/react";
-import { request } from "http";
-import axios from "axios";
+import { Button } from "@chakra-ui/react";
 
 export default function MainMenu() {
   const handleCreateGame = () => {
-    axios
-      .post("http://127.0.0.1:8000/api/create-game/")
+    fetch("/api/create-game/", { method: "post" })
       .then((response) => {
         console.log(response);
       })

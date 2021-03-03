@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "../../css/homePage.css";
 import MainMenu from "./MainMenu";
 
