@@ -13,7 +13,7 @@
 - [x]  Landing page
 - [x]  DB for rooms
 - [x]  Ability to create games
-- [ ]  Ability to join games
+- [x]  Ability to join games
 - [ ]  Room page
 - [ ]  Backend card system
 - [ ]  Dispatch cards to all users (Web Sockets??)
