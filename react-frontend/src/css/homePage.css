@@ -1,7 +1,5 @@
 .pokerBackground {
-  background-image: url("../images/pokerBackground.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI5MCI+CjxnIHRyYW5zZm9ybT0ic2NhbGUoMSAxLjUpIj4KPHJlY3Qgd2lkdGg9Ijk5IiBoZWlnaHQ9Ijk5IiBmaWxsPSIjMzU2NTRkIj48L3JlY3Q+CjxyZWN0IHdpZHRoPSI0Mi40MiIgaGVpZ2h0PSI0Mi40MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAgMCkgcm90YXRlKDQ1KSIgZmlsbD0iIzJhNTAzZCI+PC9yZWN0Pgo8cmVjdCB3aWR0aD0iOTkiIGhlaWdodD0iMSIgdHJhbnNmb3JtPSJyb3RhdGUoNDUpIiBmaWxsPSIjMmE1MDNkIj48L3JlY3Q+CjxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIDYwKSByb3RhdGUoLTQ1KSIgZmlsbD0iIzJhNTAzZCI+PC9yZWN0Pgo8L2c+Cjwvc3ZnPg==");
 }
 
 .homePageWrapper {
@@ -11,14 +9,14 @@
 }
 
 .MainMenu-Container {
-  width: 50%;
-  height: 70%;
-  background-color: rgba(0, 0, 0, 0.568);
+  width: 40%;
+  height: 20%;
+  background-color: transparent;
   left: 50%;
   transform: translateX(-50%);
   position: fixed;
   top: 15%;
-  border-radius: 10%;
+  border-radius: 80%;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -26,7 +24,8 @@
 
 .MainMenu-Header {
   font-weight: 700;
-  color: rgb(88, 88, 88);
+  color: #38A169;
+  text-shadow: 5px 5px black;
   font-size: 45px;
 }
 
@@ -35,11 +34,11 @@
   flex-direction: row;
   justify-content: center;
   position: relative;
-  height: 100%;
+  height: 10%;
 }
 
 .MainMenu-Button {
-  padding: 50px;
+  padding: 20px 20px 20px 20px;
   margin: 10px;
   font-size: 20px;
 }

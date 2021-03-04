@@ -91,7 +91,6 @@ export default function JoinGamePage() {
                   placeholder="*****"
                   maxlength="5"
                 />
-                <FormHelperText>Enter game code</FormHelperText>
                 <FormErrorMessage>Invalid Code </FormErrorMessage>
               </FormControl>
               <Button width="full" mt={4} type="submit">
