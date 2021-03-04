@@ -19,22 +19,23 @@ def createGame(request):
     if not request.session.exists(request.session.session_key):
         request.session.create()
     host_id = request.session.session_key
-    is_host_a_host = Games.objects.filter(host_id = host_id)
-    if is_host_a_host.exists():
-        return Response({'Bad Request': 'User already a host of a different room'}, status.HTTP_409_CONFLICT)
-    else:
-        new_game = Games(host_id=host_id)
-        new_game.save()
-        return Response(GetGameCodeSerializer(new_game).data, status.HTTP_201_CREATED)
+    #need to change the .delete later
+    is_host_a_host = Games.objects.filter(host_id = host_id).delete()
+    #if is_host_a_host.exists():
+    #    return Response({'Bad Request': 'User already a host of a different room'}, status.HTTP_409_CONFLICT)
+    new_game = Games(host_id=host_id)
+    new_game.save()
+    return Response(GetGameCodeSerializer(new_game).data, status.HTTP_201_CREATED)
     return Response({'Bad Request': 'Invalid request'}, status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
 def verifyGame(request):
     code = request.data.get("code")
-    print(code)
-    #return Response({"Game is verified": "Thanks"}, status.HTTP_200_OK)
-    return Response({"Game is verified": "Thanks"}, status.HTTP_400_BAD_REQUEST)
+    gameExists = Games.objects.filter(game_code=code)
+    if gameExists.exists():
+        return Response({"Game is verified": "Thanks"}, status.HTTP_200_OK)
+    return Response({"Game dosn't exist": "Sorry"}, status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
