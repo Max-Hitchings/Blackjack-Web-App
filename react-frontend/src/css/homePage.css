@@ -11,15 +11,12 @@
 .MainMenu-Container {
   width: 40%;
   height: 20%;
-  background-color: transparent;
   left: 50%;
   transform: translateX(-50%);
   position: fixed;
   top: 15%;
-  border-radius: 80%;
   text-align: center;
-  display: flex;
-  flex-direction: column;
+
 }
 
 .MainMenu-Header {
@@ -38,7 +35,7 @@
 }
 
 .MainMenu-Button {
-  padding: 20px 20px 20px 20px;
+  padding: 20px;
   margin: 10px;
   font-size: 20px;
 }

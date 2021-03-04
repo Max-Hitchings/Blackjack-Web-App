@@ -33,6 +33,7 @@ export default function MainMenu() {
       <div className="MainMenu-ButtonContainer">
         <Button
           colorScheme="green"
+          color="black"
           className="MainMenu-Button"
           onClick={() => {
             handleJoinGame();
@@ -42,6 +43,7 @@ export default function MainMenu() {
         </Button>
         <Button
           colorScheme="green"
+          color="black"
           className="MainMenu-Button"
           onClick={() => {
             handleCreateGame();
