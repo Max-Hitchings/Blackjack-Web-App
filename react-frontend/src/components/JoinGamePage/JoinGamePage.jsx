@@ -30,11 +30,13 @@ export default function JoinGamePage() {
     };
 
     console.log(gameCode);
-    fetch("/api/verify-game", requestData).then((response) => {
-      if (response.ok) {
-        history.push(`/game/${gameCode}`);
-      }
-    });
+    fetch("/api/verify-game", requestData)
+      .then((response) => {
+        if (response.ok) {
+          history.push(`/game/${gameCode}`);
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   const handleGameCodeChange = (event) => {
