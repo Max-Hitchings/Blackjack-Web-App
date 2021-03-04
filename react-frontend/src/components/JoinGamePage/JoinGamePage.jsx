@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FormControl,
   FormLabel,
@@ -9,6 +9,8 @@ import {
   Heading,
   useColorMode,
   IconButton,
+  FormErrorMessage,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { BiMoon, BiSun } from "react-icons/bi";
 import { useHistory } from "react-router-dom";
@@ -16,6 +18,7 @@ import { useHistory } from "react-router-dom";
 export default function JoinGamePage() {
   const { colorMode, toggleColorMode } = useColorMode();
   const [gameCode, setgameCode] = useState();
+  const [codeValid, setcodeValid] = useState(false);
   const history = useHistory();
 
   const handleFormSubmit = (event) => {
@@ -34,6 +37,8 @@ export default function JoinGamePage() {
       .then((response) => {
         if (response.ok) {
           history.push(`/game/${gameCode}`);
+        } else {
+          setcodeValid(false);
         }
       })
       .catch((error) => console.error(error));
@@ -43,6 +48,12 @@ export default function JoinGamePage() {
     setgameCode(event.target.value);
   };
 
+  useEffect(() => {
+    return () => {
+      console.log("bye");
+    };
+  }, []);
+
   return (
     <>
       <Box textAlign="right" py={4} mr={12}>
@@ -51,6 +62,11 @@ export default function JoinGamePage() {
           icon={colorMode === "light" ? <BiMoon /> : <BiSun />}
           onClick={toggleColorMode}
           variant="ghost"
+        />
+        <IconButton
+          colorScheme={colorMode === "light" ? "blue" : "red"}
+          icon={colorMode === "light" ? <BiMoon /> : <BiSun />}
+          onClick={() => history.push("/")}
         />
       </Box>
       <Flex
@@ -66,7 +82,7 @@ export default function JoinGamePage() {
           </Box>
           <Box my={4} textAlign="left">
             <form onSubmit={handleFormSubmit}>
-              <FormControl>
+              <FormControl isValid={codeValid}>
                 <FormLabel>Game Code</FormLabel>
                 <Input
                   type="code"
@@ -75,6 +91,8 @@ export default function JoinGamePage() {
                   placeholder="*****"
                   maxlength="5"
                 />
+                <FormHelperText>Enter game code</FormHelperText>
+                <FormErrorMessage>Invalid Code </FormErrorMessage>
               </FormControl>
               <Button width="full" mt={4} type="submit">
                 Join Game

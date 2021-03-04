@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { Button } from "@chakra-ui/react";
 
 export default function MainMenu() {
   const history = useHistory();
@@ -29,22 +30,22 @@ export default function MainMenu() {
     <div className="MainMenu-Container">
       <div className="MainMenu-Header">BLACKJACK</div>
       <div className="MainMenu-ButtonContainer">
-        <button
+        <Button
           className="MainMenu-Button"
           onClick={() => {
             handleJoinGame();
           }}
         >
           Join Game
-        </button>
-        <button
+        </Button>
+        <Button
           className="MainMenu-Button"
           onClick={() => {
             handleCreateGame();
           }}
         >
           Create Game
-        </button>
+        </Button>
       </div>
     </div>
   );

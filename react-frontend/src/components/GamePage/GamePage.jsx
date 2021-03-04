@@ -1,11 +1,16 @@
 import React from "react";
-//import { useEffect } from "react";
+import { useEffect } from "react";
 //import { useHistory } from "react-router-dom";
 
 export default function GamePage({ ...props }) {
   const gameCode = props.match.params.gameCode;
   //const history = useHistory();
-
+  useEffect(() => {
+    console.log(props);
+    return () => {
+      console.log("bye");
+    };
+  }, []);
   //useEffect(() => {
   //  console.log("sent");
   //
