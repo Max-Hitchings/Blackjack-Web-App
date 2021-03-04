@@ -12,20 +12,6 @@ def check_session(request):
         request.session.create()
 
 # Create your views here.
-@api_view(['GET'])
-def viewGames(request):
-    queryset = Games.objects.all()
-    serializer = GameSerializer(queryset, many=True)
-    return Response(serializer.data)
-
-
-
-@api_view(['GET'])
-def viewGame(request, id):
-    queryset = Games.objects.get(id=id)
-    serializer = GameSerializer(queryset, many=False)
-    return Response(serializer.data)
-
 
 
 @api_view(['POST'])
@@ -42,6 +28,28 @@ def createGame(request):
         return Response(GetGameCodeSerializer(new_game).data, status.HTTP_201_CREATED)
     return Response({'Bad Request': 'Invalid request'}, status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['POST'])
+def verifyGame(request):
+    code = request.data.get("code")
+    print(code)
+    #return Response({"Game is verified": "Thanks"}, status.HTTP_200_OK)
+    return Response({"Game is verified": "Thanks"}, status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def viewGames(request):
+    queryset = Games.objects.all()
+    serializer = GameSerializer(queryset, many=True)
+    return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+def viewGame(request, id):
+    queryset = Games.objects.get(id=id)
+    serializer = GameSerializer(queryset, many=False)
+    return Response(serializer.data)
 
 
 @api_view(['POST'])
