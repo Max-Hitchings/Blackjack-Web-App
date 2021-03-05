@@ -37,8 +37,16 @@ export default function GamePage({ ...props }) {
   //}, [gameCode, history]);
 
   return (
-    <div>
-      <div>You are in a game with the code {gameCode}</div>
+    <div style={{ height: "100vh" }}>
+      <div
+        style={{
+          textAlign: "center",
+          fontSize: "50px",
+          fontWeight: "bold",
+        }}
+      >
+        You are in a game with the code {gameCode}
+      </div>
     </div>
   );
 }

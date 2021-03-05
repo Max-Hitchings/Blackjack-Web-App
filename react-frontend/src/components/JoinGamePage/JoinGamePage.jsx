@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { BiMoon, BiSun } from "react-icons/bi";
 import { useHistory } from "react-router-dom";
+import "../../css/gamePage.css";
 
 export default function JoinGamePage() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -57,50 +58,43 @@ export default function JoinGamePage() {
 
   return (
     <>
-      <Box textAlign="right" py={4} mr={12}>
-        <IconButton
-          colorScheme={colorMode === "light" ? "blue" : "red"}
-          icon={colorMode === "light" ? <BiMoon /> : <BiSun />}
-          onClick={toggleColorMode}
-          variant="ghost"
-        />
-        <IconButton
-          colorScheme={colorMode === "light" ? "blue" : "red"}
-          icon={colorMode === "light" ? <BiMoon /> : <BiSun />}
-          onClick={() => history.push("/")}
-        />
-      </Box>
-      <Flex
-        width="full"
-        height="80vh"
-        align="center"
-        justifyContent="center"
-        alignSelf="center"
-      >
-        <Box p={2}>
-          <Box textAlign="center">
-            <Heading>Join Game</Heading>
+      <div className="pokerBackground joinGamePage-Background">
+        <Flex
+          width="full"
+          height="100vh"
+          justifyContent="center"
+          alignSelf="center"
+        >
+          <Box
+            style={{
+              position: "absolute",
+              top: "225px",
+            }}
+          >
+            <Box textAlign="center">
+              <Heading>Join Game</Heading>
+            </Box>
+            <Box my={4} textAlign="left">
+              <form onSubmit={handleFormSubmit}>
+                <FormControl>
+                  <FormLabel>Game Code</FormLabel>
+                  <Input
+                    type="code"
+                    onChange={handleGameCodeChange}
+                    value={gameCode}
+                    placeholder="*****"
+                    maxlength="5"
+                  />
+                  <FormErrorMessage>Invalid Code </FormErrorMessage>
+                </FormControl>
+                <Button width="full" mt={4} type="submit">
+                  Join Game
+                </Button>
+              </form>
+            </Box>
           </Box>
-          <Box my={4} textAlign="left">
-            <form onSubmit={handleFormSubmit}>
-              <FormControl>
-                <FormLabel>Game Code</FormLabel>
-                <Input
-                  type="code"
-                  onChange={handleGameCodeChange}
-                  value={gameCode}
-                  placeholder="*****"
-                  maxlength="5"
-                />
-                <FormErrorMessage>Invalid Code </FormErrorMessage>
-              </FormControl>
-              <Button width="full" mt={4} type="submit">
-                Join Game
-              </Button>
-            </form>
-          </Box>
-        </Box>
-      </Flex>
+        </Flex>
+      </div>
     </>
   );
 }

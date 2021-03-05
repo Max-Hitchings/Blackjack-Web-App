@@ -31,6 +31,10 @@ CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:8000",
 ]
 
+GRAPHENE = {
+    "SCHEMA": "api.schema.schema"
+}
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -42,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'api.apps.ApiConfig',
     'corsheaders',
+    'graphene_django'
 ]
 
 MIDDLEWARE = [
