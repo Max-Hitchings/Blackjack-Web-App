@@ -1,7 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
-import PokerBackground from "../util/pokerBackground.jsx"
 
 export default function MainMenu() {
   const history = useHistory();

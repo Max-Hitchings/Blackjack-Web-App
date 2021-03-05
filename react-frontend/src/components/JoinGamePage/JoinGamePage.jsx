@@ -10,16 +10,17 @@ import {
   useColorMode,
   IconButton,
   FormErrorMessage,
-  FormHelperText,
 } from "@chakra-ui/react";
 import { BiMoon, BiSun } from "react-icons/bi";
 import { useHistory } from "react-router-dom";
 
 export default function JoinGamePage() {
   const { colorMode, toggleColorMode } = useColorMode();
-  const [gameCode, setgameCode] = useState();
+  const [gameCode, setgameCode] = useState("");
   const [codeValid, setcodeValid] = useState(false);
   const history = useHistory();
+
+  console.log(codeValid);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -82,7 +83,7 @@ export default function JoinGamePage() {
           </Box>
           <Box my={4} textAlign="left">
             <form onSubmit={handleFormSubmit}>
-              <FormControl isValid={codeValid}>
+              <FormControl>
                 <FormLabel>Game Code</FormLabel>
                 <Input
                   type="code"

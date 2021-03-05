@@ -10,6 +10,7 @@ export default function GamePage({ ...props }) {
     return () => {
       console.log("bye");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //useEffect(() => {
   //  console.log("sent");
