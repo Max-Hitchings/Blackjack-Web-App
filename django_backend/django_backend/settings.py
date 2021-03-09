@@ -84,17 +84,6 @@ WSGI_APPLICATION = 'django_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'blackjack',
-#        'USER': 'postgres',
-#        'PASSWORD':'rubberduck',
-#        'HOST':'blackjackdb.cpshvtfpcudq.eu-west-2.rds.amazonaws.com',
-#        'PORT':'5432'
-#    }
-#}
-
 from decouple import config
 DATABASES = {
     'default': {
