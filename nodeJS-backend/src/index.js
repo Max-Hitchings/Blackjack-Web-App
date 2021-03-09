@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
-  socket.emit("hello", "world");
+  socket.emit("hello", "hello world from NodeJS");
 
   socket.on("salutations", ({ gameCode, sessionKey }) => {
     console.log(gameCode, sessionKey); // world
@@ -29,9 +29,7 @@ io.on("connection", (socket) => {
     };
 
     fetch("http://127.0.0.1:8000/api/verify-game", requestData)
-      .then((response) => {
-        console.log(response);
-      })
+      .then((response) => console.log(response))
       .catch((error) => console.error(error));
   });
 

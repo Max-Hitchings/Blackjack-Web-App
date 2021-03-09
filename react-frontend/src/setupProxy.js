@@ -1,5 +1,7 @@
 const proxy = require("http-proxy-middleware");
+require("dotenv").config();
 
 module.exports = function (app) {
-  app.use(proxy("/api", { target: "http://localhost:8000/" }));
+  app.use(proxy("/api", { target: process.env.DJANGO_PORT }));
+  app.use(proxy("/socket.io", { target: process.env.SOCKETIO_PORT }));
 };

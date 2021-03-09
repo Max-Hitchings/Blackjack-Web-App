@@ -19,7 +19,7 @@ export default function MainMenu() {
 
         history.push(`/game/${responseJson.game_code}`);
       })
-      .catch((error) => {});
+      .catch((error) => console.error(error));
   };
 
   const handleJoinGame = () => {
