@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { homePage } from "./components/homePage/homePage";
 import GamePage from "./components/GamePage/GamePage";
 import JoinGamePage from "./components/JoinGamePage/JoinGamePage.jsx";
-import WebSocket from "./components/util/WebSocket";
+import { Websocket } from "./components/websocket/websocket.jsx";
 
 export default function AppRoutes() {
   return (
@@ -13,7 +13,7 @@ export default function AppRoutes() {
         <Route exact path="/" component={homePage} />
         <Route exact path="/create" component={homePage} />
         <Route exact path="/join" component={JoinGamePage} />
-        <Route exact path="/socket" component={WebSocket} />
+        <Route path="/socket" component={Websocket} />
         <Route path="/game/:gameCode" component={GamePage} />
       </Switch>
     </Router>

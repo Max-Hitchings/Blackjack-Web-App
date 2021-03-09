@@ -7,16 +7,12 @@ import {
   Input,
   Button,
   Heading,
-  useColorMode,
-  IconButton,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { BiMoon, BiSun } from "react-icons/bi";
 import { useHistory } from "react-router-dom";
 import "../../css/gamePage.css";
 
 export default function JoinGamePage() {
-  const { colorMode, toggleColorMode } = useColorMode();
   const [gameCode, setgameCode] = useState("");
   const [codeValid, setcodeValid] = useState(false);
   const history = useHistory();
