@@ -7,6 +7,7 @@
 | React | Netlify |
 | Django | AWS |
 | PostgreSQL | AWS RDS |
+| NodeJS | ? |
 
 ## To-Do
 
