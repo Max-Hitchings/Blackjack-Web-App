@@ -1,5 +1,6 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+//import { useEffect } from "react";
 //import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 require("dotenv").config();
@@ -7,9 +8,15 @@ const socket = io(process.env.SOCKETIO_PORT);
 
 export default function GamePage({ ...props }) {
   const gameCode = props.match.params.gameCode;
+  const location = useLocation();
+
+  let initHost = location.state.userHost;
+  initHost = initHost === undefined || initHost === false ? false : true;
+
+  const [userHost, setuserHost] = useState(initHost);
   //const history = useHistory();
   useEffect(() => {
-    console.log(props);
+    console.log("user is host:", userHost);
     return () => {
       console.log("bye");
     };
@@ -23,6 +30,9 @@ export default function GamePage({ ...props }) {
 
       Connected with id: ${socket.id}
       `);
+
+      socket.emit("init", { gameCode: userHost });
+      socket.on("init-response", ({ game_code }) => console.log(game_code));
 
       socket.on("connect_error", () => {
         setTimeout(() => {

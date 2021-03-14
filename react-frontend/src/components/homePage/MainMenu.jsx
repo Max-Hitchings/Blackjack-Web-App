@@ -17,7 +17,10 @@ export default function MainMenu() {
       .then((responseJson) => {
         console.log(responseJson);
 
-        history.push(`/game/${responseJson.game_code}`);
+        history.push({
+          pathname: `/game/${responseJson.game_code}`,
+          state: { userHost: true },
+        });
       })
       .catch((error) => console.error(error));
   };
