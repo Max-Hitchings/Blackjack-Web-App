@@ -13,15 +13,11 @@ export default function GamePage({ ...props }) {
   let initHost = location.state.userHost;
   initHost = initHost === undefined || initHost === false ? false : true;
 
-  const [userHost, setuserHost] = useState(initHost);
+  const [userHost] = useState(initHost);
   //const history = useHistory();
   useEffect(() => {
     console.log("user is host:", userHost);
-    return () => {
-      console.log("bye");
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userHost]);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -40,6 +36,7 @@ export default function GamePage({ ...props }) {
         }, 1000);
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

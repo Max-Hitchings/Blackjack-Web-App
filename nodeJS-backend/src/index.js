@@ -21,7 +21,7 @@ io.on("connection", (socket) => {
     console.log(gameCode, sessionKey);
 
     const rooms = io.of("/").adapter.rooms;
-    console.log(rooms);
+    console.log("Rooms:", rooms);
 
     const requestData = {
       method: "POST",
@@ -36,9 +36,9 @@ io.on("connection", (socket) => {
       .catch((error) => console.error(error));
   });
 
-  io.of("/").adapter.on("join-room", (room, id) => {
-    console.log(`socket ${id} has joined room ${room}`);
-  });
+  //io.of("/").adapter.on("join-room", (room, id) => {
+  //  console.log(`socket ${id} has joined room ${room}`);
+  //});
 
   socket.on("init", (socket, { gameCode }) => {
     console.log("Checking room");
@@ -68,7 +68,7 @@ io.of("/").adapter.on("create-room", (room) => {
   console.log(`room ${room} was created`);
 });
 
-PORT = 4000;
+PORT = 4040;
 
 http.listen(PORT, () => {
   console.log(`listening on *:${PORT}`);

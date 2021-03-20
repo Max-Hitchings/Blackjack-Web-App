@@ -82,7 +82,7 @@ export default function JoinGamePage() {
                     onChange={handleGameCodeChange}
                     value={gameCode}
                     placeholder="*****"
-                    maxlength="5"
+                    maxLength="5"
                   />
                   <FormErrorMessage>Invalid Code </FormErrorMessage>
                 </FormControl>

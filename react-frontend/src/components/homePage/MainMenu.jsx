@@ -6,7 +6,12 @@ export default function MainMenu() {
   const history = useHistory();
 
   const handleCreateGame = () => {
-    fetch("/api/create-game/", { method: "post" })
+    const requestData = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    };
+
+    fetch("/api/create-game/", requestData)
       .then((response) => {
         if (response.status === 201) {
           return response.json();
