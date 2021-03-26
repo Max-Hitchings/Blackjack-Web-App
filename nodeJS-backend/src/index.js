@@ -1,3 +1,4 @@
+const { verifyGame } = require("./util/verifyGame");
 const { response } = require("express");
 const fetch = require("node-fetch");
 const app = require("express")();
@@ -17,6 +18,16 @@ io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
   socket.emit("hello", "hello world from NodeJS");
 
+  socket.join("some room");
+
+  socket.on("join-game", ({ gameCode, userHost }) => {
+    console.log({ gameCode, userHost });
+  });
+
+  socket.on("test", ({ payload }) => {
+    console.log(payload);
+  });
+  /*
   socket.on("salutations", ({ gameCode, sessionKey }) => {
     const requestData = {
       method: "POST",
@@ -31,9 +42,14 @@ io.on("connection", (socket) => {
       .catch((error) => console.error(error));
   });
 
-  socket.on("init", (socket, { gameCode }) => {
+  socket.on("init", (socket, payload) => {
     console.log("Checking room");
 
+    if (typeof payload.gameCode === "undefined") {
+      console.log("has property");
+    } else {
+      console.log("undifined");
+    }
     const requestData = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -49,6 +65,7 @@ io.on("connection", (socket) => {
       })
       .catch((error) => console.error(error));
   });
+  */
 
   socket.on("disconnect", () => {
     console.log("user disconnected", socket.id);
@@ -59,7 +76,7 @@ io.of("/").adapter.on("create-room", (room) => {
   console.log(`room ${room} was created`);
 });
 
-PORT = 4040;
+const PORT = 4040;
 
 http.listen(PORT, () => {
   console.log(`listening on *:${PORT}`);
