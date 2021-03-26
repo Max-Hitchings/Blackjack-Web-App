@@ -18,16 +18,11 @@ io.on("connection", (socket) => {
   socket.emit("hello", "hello world from NodeJS");
 
   socket.on("salutations", ({ gameCode, sessionKey }) => {
-    console.log(gameCode, sessionKey);
-
-    const rooms = io.of("/").adapter.rooms;
-    console.log("Rooms:", rooms);
-
     const requestData = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        code: "D6D06",
+        code: "D77E9",
       }),
     };
 
@@ -35,10 +30,6 @@ io.on("connection", (socket) => {
       .then((response) => console.log(response))
       .catch((error) => console.error(error));
   });
-
-  //io.of("/").adapter.on("join-room", (room, id) => {
-  //  console.log(`socket ${id} has joined room ${room}`);
-  //});
 
   socket.on("init", (socket, { gameCode }) => {
     console.log("Checking room");
@@ -53,7 +44,7 @@ io.on("connection", (socket) => {
 
     fetch("http://127.0.0.1:8000/api/verify-game", requestData)
       .then((response) => {
-        console.log(response);
+        //console.log(response);
         socket.emit("init-response", response);
       })
       .catch((error) => console.error(error));
