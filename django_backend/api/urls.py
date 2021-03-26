@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import viewGames, viewGame, createGame, updateGame, deleteGame, verifyGame
 from . import views
-from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path("view-game/<str:id>", views.viewGame, name="game"),
@@ -10,5 +9,4 @@ urlpatterns = [
     path("update-game/<str:id>", views.updateGame, name="update-game"),
     path("delete-game/<str:id>", views.deleteGame, name="update-game"),
     path("verify-game", views.verifyGame, name="verifyGame"),
-    path("graphql", GraphQLView.as_view(graphiql=True)),
 ]
