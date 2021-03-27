@@ -24,16 +24,14 @@ SECRET_KEY = 'b4&&k(^^l!)%h7ai@_ol3k)%zac13*x73)gc(j$^-r6+ulcs79'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["http://127.0.0.1:3000","127.0.0.1","localhost","http://127.0.0.1:8000"]
+ALLOWED_HOSTS = ["http://127.0.0.1:3000","127.0.0.1","localhost","http://127.0.0.1:8000","http://localhost:3000"]
 
 CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:3000",
     "http://127.0.0.1:8000",
+    "http://localhost:3000",
+    "http://localhost:8000",
 ]
-
-GRAPHENE = {
-    "SCHEMA": "api.schema.schema"
-}
 
 # Application definition
 INSTALLED_APPS = [
@@ -45,8 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api.apps.ApiConfig',
-    'corsheaders',
-    'graphene_django'
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -83,17 +80,6 @@ WSGI_APPLICATION = 'django_backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'blackjack',
-#        'USER': 'postgres',
-#        'PASSWORD':'rubberduck',
-#        'HOST':'blackjackdb.cpshvtfpcudq.eu-west-2.rds.amazonaws.com',
-#        'PORT':'5432'
-#    }
-#}
 
 from decouple import config
 DATABASES = {

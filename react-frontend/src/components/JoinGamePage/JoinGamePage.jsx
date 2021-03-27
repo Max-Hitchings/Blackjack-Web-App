@@ -34,7 +34,10 @@ export default function JoinGamePage() {
     fetch("/api/verify-game", requestData)
       .then((response) => {
         if (response.ok) {
-          history.push(`/game/${gameCode}`);
+          history.push({
+            pathname: `/game/${gameCode}`,
+            state: { userHost: false },
+          });
         } else {
           setcodeValid(false);
         }
@@ -79,7 +82,7 @@ export default function JoinGamePage() {
                     onChange={handleGameCodeChange}
                     value={gameCode}
                     placeholder="*****"
-                    maxlength="5"
+                    maxLength="5"
                   />
                   <FormErrorMessage>Invalid Code </FormErrorMessage>
                 </FormControl>

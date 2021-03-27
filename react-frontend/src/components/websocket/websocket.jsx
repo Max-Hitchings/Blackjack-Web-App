@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import io from "socket.io-client";
 import { Button } from "@chakra-ui/react";
-const socket = io("http://localhost:4000");
+const socket = io("http://localhost:4040");
 
 export const Websocket = () => {
   useEffect(() => {
@@ -18,27 +18,29 @@ export const Websocket = () => {
         }, 1000);
       });
 
-      socket.on("hello", (arg) => {
-        console.log(arg); // world
-      });
-
-      // handle the event sent with socket.send()
-      socket.on("message", (data) => {
-        console.log(data);
-      });
-
-      // or with emit() and custom event names
+      return () => {};
     });
   }, []);
 
   const socketSend = () => {
     console.log("sent");
-    socket.emit("salutations", { gameCode: "aaaaa", sessionKey: "bbbbb" });
+    //socket.emit("salutations", { gameCode: "aaaaa", sessionKey: "bbbbb" });
+    socket.emit(
+      "join-game",
+      { gameCode: "27D3C", userHost: true },
+      (response) => {
+        console.log(response.status);
+      }
+    );
   };
 
+  const leaveGame = () => {
+    socket.emit("leave-game", { gameCode: "27D3C" });
+  };
   return (
     <>
       <Button onClick={socketSend}>hi</Button>
+      <Button onClick={leaveGame}>Leave</Button>
     </>
   );
 };
