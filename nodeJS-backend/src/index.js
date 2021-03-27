@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { verifyGame } = require("./util/verifyGame");
 const { response } = require("express");
 const fetch = require("node-fetch");
@@ -11,7 +12,7 @@ const io = require("socket.io")(http, {
 });
 
 app.get("/", (req, res) => {
-  res.send("<h1>Hello world</h1>");
+  res.send("<h2>Blackjack WS Server</h2>");
 });
 
 io.on("connection", (socket) => {
@@ -20,8 +21,15 @@ io.on("connection", (socket) => {
 
   socket.join("some room");
 
-  socket.on("join-game", ({ gameCode, userHost }) => {
+  socket.on("join-game", async ({ gameCode, userHost }) => {
     console.log({ gameCode, userHost });
+
+    if (await verifyGame(gameCode)) {
+      socket.join(gameCode);
+    }
+    console.log(socket.rooms);
+
+    //const gameVerified = await verifyGame(gameCode);
   });
 
   socket.on("test", ({ payload }) => {
@@ -76,8 +84,8 @@ io.of("/").adapter.on("create-room", (room) => {
   console.log(`room ${room} was created`);
 });
 
-const PORT = 4040;
+const LISTEN_PORT = process.env.LISTEN_PORT || 4040;
 
-http.listen(PORT, () => {
-  console.log(`listening on *:${PORT}`);
+http.listen(LISTEN_PORT, () => {
+  console.log(`listening on *:${LISTEN_PORT}`);
 });
