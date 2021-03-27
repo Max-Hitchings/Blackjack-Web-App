@@ -27,7 +27,7 @@ export default function GamePage({ ...props }) {
       Connected with id: ${socket.id}
       `);
 
-      socket.emit("init", { gameCode: userHost });
+      socket.emit("join-game", { gameCode: gameCode });
       socket.on("init-response", ({ game_code }) => console.log(game_code));
 
       socket.on("connect_error", () => {
@@ -36,6 +36,10 @@ export default function GamePage({ ...props }) {
         }, 1000);
       });
     });
+
+    return () => {
+      socket.emit("leave-game", { gameCode: gameCode });
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
