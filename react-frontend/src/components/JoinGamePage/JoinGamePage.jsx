@@ -10,7 +10,6 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
-import "../../css/gamePage.css";
 
 export default function JoinGamePage() {
   const [gameCode, setgameCode] = useState("");
