@@ -17,32 +17,26 @@ export default function JoinGamePage() {
   const [codeValid, setcodeValid] = useState(false);
   const history = useHistory();
 
-  console.log(codeValid);
-
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
 
     const requestData = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        code: gameCode,
+        gameCode: gameCode,
       }),
     };
 
-    console.log(gameCode);
-    fetch("/api/verify-game", requestData)
-      .then((response) => {
-        if (response.ok) {
-          history.push({
-            pathname: `/game/${gameCode}`,
-            state: { userHost: false },
-          });
-        } else {
-          setcodeValid(false);
-        }
-      })
-      .catch((error) => console.error(error));
+    const response = await fetch("/api/verify-game", requestData);
+    if (response.ok) {
+      history.push({
+        pathname: `/game/${gameCode}`,
+        state: { userHost: false },
+      });
+    } else {
+      setcodeValid(true);
+    }
   };
 
   const handleGameCodeChange = (event) => {
@@ -75,7 +69,7 @@ export default function JoinGamePage() {
             </Box>
             <Box my={4} textAlign="left">
               <form onSubmit={handleFormSubmit}>
-                <FormControl>
+                <FormControl isInvalid={codeValid}>
                   <FormLabel>Game Code</FormLabel>
                   <Input
                     type="code"

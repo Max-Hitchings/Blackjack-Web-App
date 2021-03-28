@@ -23,7 +23,7 @@ export default function MainMenu() {
         console.log(responseJson);
 
         history.push({
-          pathname: `/game/${responseJson.game_code}`,
+          pathname: `/game/${responseJson.gameCode}`,
           state: { userHost: true },
         });
       })
