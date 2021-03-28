@@ -24,7 +24,7 @@
 
 ## Plan
 
-<img src="./docs/newPlan.png" alt="project plan" width="517" height="448" />
+![Image of Plan](https://github.com/Max-Hitchings/Blackjack-Web-App/blob/Migration-to-MongoDB/docs/newPlan.png)
 
 ## Possible future implmentations
 
