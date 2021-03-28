@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-//import { useEffect } from "react";
-//import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 require("dotenv").config();
-const socket = io(process.env.SOCKETIO_PORT);
+const socket = io(process.env.EXPRESSJS_URL);
 
 export default function GamePage({ ...props }) {
   const gameCode = props.match.params.gameCode;
   const location = useLocation();
 
-  let initHost = location.state.userHost;
-  initHost = initHost === undefined || initHost === false ? false : true;
+  try {
+    var initHost = location.state.userHost;
+    initHost = initHost === undefined || initHost === false ? false : true;
+  } catch {
+    window.location.replace("http://127.0.0.1:3000");
+  }
 
   const [userHost] = useState(initHost);
-  //const history = useHistory();
+
   useEffect(() => {
     console.log("user is host:", userHost);
   }, [userHost]);
