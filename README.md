@@ -25,7 +25,7 @@
 
 ## Plan
 
-<img src="./docs/plan.png" alt="project plan" width="517" height="448" />
+<img src="./docs/newPlan.png" alt="project plan" width="517" height="448" />
 
 ## Possible future implmentations
 
