@@ -5,9 +5,8 @@
 | Tech       | Host    |
 | ---------- | ------- |
 | React      | Netlify |
-| Django     | AWS     |
-| PostgreSQL | AWS RDS |
-| NodeJS     | ?       |
+| ExpressJS  | DigitalOcean |
+| MongoDB    | AWS |
 
 ## To-Do
 
