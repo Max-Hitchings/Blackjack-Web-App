@@ -1,8 +1,15 @@
 const mongoose = require("mongoose");
+const { generateCards } = require("../util/generateCards");
 
 const gameSchema = new mongoose.Schema({
-  gameId: { type: String, required: true },
-  cards: { type: Array, required: true },
+  gameCode: {
+    type: String,
+    required: true,
+    default: Math.random().toString(36).toUpperCase().substring(2, 7),
+    unique: true,
+    dropDups: true,
+  },
+  cards: { type: Array, required: true, default: generateCards() },
   players: { type: Array, required: true },
 });
 
