@@ -1,0 +1,12 @@
+GET http://127.0.0.1:4040/api/
+
+###
+POST http://127.0.0.1:4040/api/verify-game
+content-type: application/json
+
+{
+    "gameCode": "hello"
+}
+
+### 
+POST http://127.0.0.1:4040/api/create-game
