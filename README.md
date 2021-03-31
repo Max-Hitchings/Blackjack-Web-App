@@ -5,9 +5,8 @@
 | Tech       | Host    |
 | ---------- | ------- |
 | React      | Netlify |
-| Django     | AWS     |
-| PostgreSQL | AWS RDS |
-| NodeJS     | ?       |
+| ExpressJS  | DigitalOcean |
+| MongoDB    | AWS |
 
 ## To-Do
 
@@ -25,7 +24,7 @@
 
 ## Plan
 
-<img src="./docs/plan.png" alt="project plan" width="517" height="448" />
+![Image of Plan](https://github.com/Max-Hitchings/Blackjack-Web-App/blob/Migration-to-MongoDB/docs/newPlan.png)
 
 ## Possible future implmentations
 

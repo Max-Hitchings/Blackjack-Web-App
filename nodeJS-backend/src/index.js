@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { verifyGame } = require("./util/verifyGame");
-const { response } = require("express");
+const express = require("express");
 const fetch = require("node-fetch");
 const Games = require("./models/games.js");
 const app = require("express")();
@@ -19,11 +19,15 @@ mongoose.connect(process.env.DATABASE_URL, {
 });
 const db = mongoose.connection;
 db.on("error", (err) => console.error(err));
-db.on("open", () => console.error("Connected to Database"));
+db.once("open", () => console.error("Connected to Database"));
 
+app.use(express.json());
 app.get("/", (req, res) => {
   res.send("<h2>Blackjack WS Server</h2>");
 });
+
+const apiRouter = require("./routes/api");
+app.use("/api", apiRouter);
 
 io.on("connection", (socket) => {
   socket.on("join-game", async ({ gameCode }) => {
