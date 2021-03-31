@@ -24,7 +24,7 @@
 
 ## Plan
 
-![Image of Plan](https://github.com/Max-Hitchings/Blackjack-Web-App/blob/Migration-to-MongoDB/docs/newPlan.png)
+![Image of Plan](https://github.com/Max-Hitchings/Blackjack-Web-App/blob/master/docs/newPlan.png)
 
 ## Possible future implmentations
 
