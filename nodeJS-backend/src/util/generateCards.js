@@ -1,5 +1,5 @@
 export const generateCards = () => {
-  const suits = ["Spades", "Diamonds", "Club", "Heart"];
+  const suits = ["Spades", "Diamonds", "Clubs", "Hearts"];
   const values = [
     "Ace",
     "2",
