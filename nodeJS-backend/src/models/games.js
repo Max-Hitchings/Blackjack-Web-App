@@ -10,7 +10,7 @@ const gameSchema = new mongoose.Schema({
     dropDups: true,
   },
   cards: { type: Array, required: true, default: generateCards() },
-  players: { type: Array, required: true },
+  players: { type: Array, required: true, default: [] },
 });
 
 module.exports = mongoose.model("Games", gameSchema);
