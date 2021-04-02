@@ -30,14 +30,27 @@ const apiRouter = require("./routes/api");
 app.use("/api", apiRouter);
 
 io.on("connection", (socket) => {
-  socket.on("join-game", async ({ gameCode }) => {
+  socket.on("join-game", async ({ gameCode }, cb) => {
     socket.join(gameCode);
+    console.log("trying");
 
     try {
-      const games = await Games.find();
-      console.log(games);
+      await Games.findOne({ gameCode: gameCode }, async (err, result) => {
+        console.log(
+          "result",
+          result.players,
+          result.players.includes(socket.id)
+        );
+
+        if (!result.players.includes(socket.id)) {
+          const games = await Games.findOneAndUpdate(
+            { gameCode: gameCode },
+            { $push: { players: socket.id } }
+          );
+        }
+      });
     } catch (err) {
-      console.log(err);
+      console.log("err", err);
     }
   });
 
