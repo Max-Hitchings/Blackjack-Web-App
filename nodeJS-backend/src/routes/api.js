@@ -13,7 +13,6 @@ apiRouter.get("/", (req, res) => {
 apiRouter.post("/create-game", async (req, res) => {
   const newGame = new Games({
     gameCode: Math.random().toString(36).toUpperCase().substring(2, 7),
-    players: ["test"],
   });
 
   try {
