@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
 require("dotenv").config();
-const socket = io(process.env.EXPRESSJS_URL);
 
 export default function GamePage({ ...props }) {
   const gameCode = props.match.params.gameCode;
   const location = useLocation();
+  const socket = io(process.env.EXPRESSJS_URL);
 
   try {
     var initHost = location.state.userHost;
@@ -22,6 +22,7 @@ export default function GamePage({ ...props }) {
   }, [userHost]);
 
   useEffect(() => {
+    console.log("connecting");
     socket.on("connect", () => {
       console.log(`
       Websocket connected!
@@ -56,6 +57,7 @@ export default function GamePage({ ...props }) {
       >
         You are in a game with the code {gameCode}
       </div>
+      <div>cards: {}</div>
     </div>
   );
 }
