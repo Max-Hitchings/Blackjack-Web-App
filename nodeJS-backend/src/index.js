@@ -32,7 +32,6 @@ app.use("/api", apiRouter);
 io.on("connection", (socket) => {
   socket.on("join-game", async ({ gameCode }, cb) => {
     socket.join(gameCode);
-    console.log("trying");
 
     try {
       await Games.findOne({ gameCode: gameCode }, async (err, result) => {
@@ -50,12 +49,24 @@ io.on("connection", (socket) => {
         }
       });
     } catch (err) {
-      console.log("err", err);
+      console.log("error:", err);
     }
   });
 
   socket.on("leave-game", async ({ gameCode }) => {
     socket.leave(gameCode);
+  });
+
+  socket.on("pickup", async ({ gameCode }, callBack) => {
+    console.log("recived");
+    // const game = await Games.findOne({ gameCode: gameCode }).exec();
+
+    const newGame = await Games.findOneAndUpdate(
+      { gameCode: gameCode },
+      { $pop: { cards: -1 } }
+    );
+    console.log(newGame.cards[0]);
+    await callBack(newGame.cards[0]);
   });
 
   socket.on("disconnect", () => {
@@ -67,7 +78,7 @@ io.of("/").adapter.on("create-room", (room) => {
   console.log(`room ${room} was created`);
 });
 
-const LISTEN_PORT = process.env.LISTEN_PORT || 4040;
+const LISTEN_PORT = process.env.LISTEN_PORT || 4080;
 
 http.listen(LISTEN_PORT, () => {
   console.log(`listening on *:${LISTEN_PORT}`);

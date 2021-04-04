@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
+// import image from "./4.png";
+//import images from "./images";
 require("dotenv").config();
 
 export default function GamePage({ ...props }) {
@@ -16,6 +18,7 @@ export default function GamePage({ ...props }) {
   }
 
   const [userHost] = useState(initHost);
+  const [currentCardImage, setcurrentCardImage] = useState("./4.png");
 
   useEffect(() => {
     console.log("user is host:", userHost);
@@ -46,6 +49,14 @@ export default function GamePage({ ...props }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const pickupCard = () => {
+    console.log("sent");
+    socket.emit("pickup", { gameCode: gameCode }, (res) => {
+      console.log("sent", res);
+      setcurrentCardImage(`/images/cards/${res.Suit}/${res.Value}.png`);
+    });
+  };
+
   return (
     <div style={{ height: "100vh" }}>
       <div
@@ -57,6 +68,8 @@ export default function GamePage({ ...props }) {
       >
         You are in a game with the code {gameCode}
       </div>
+      <button onClick={pickupCard}>Pickup card</button>
+      <img src={currentCardImage} alt="" width="200" height="350" />
       <div>cards: {}</div>
     </div>
   );
