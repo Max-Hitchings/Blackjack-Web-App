@@ -5,7 +5,7 @@ import io from "socket.io-client";
 //import images from "./images";
 require("dotenv").config();
 
-export default function GamePage({ ...props }) {
+export function GamePage({ ...props }) {
   const gameCode = props.match.params.gameCode;
   const location = useLocation();
   const socket = io(process.env.EXPRESSJS_URL);
@@ -43,17 +43,21 @@ export default function GamePage({ ...props }) {
       });
     });
 
+    socket.on("send-card", (res) => console.log(res));
+
     return () => {
       socket.emit("leave-game", { gameCode: gameCode });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const pickupCard = () => {
+  const pickupCard = async () => {
     console.log("sent");
-    socket.emit("pickup", { gameCode: gameCode }, (res) => {
+    const queryStart = Date.now();
+    await socket.emit("pickup", { gameCode: gameCode }, (res) => {
       console.log("sent", res);
       setcurrentCardImage(`/images/cards/${res.Suit}/${res.Value}.png`);
+      console.log(`total query time: ${Date.now() - queryStart}`);
     });
   };
 

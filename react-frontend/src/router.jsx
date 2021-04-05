@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { homePage } from "./components/homePage/homePage";
-import GamePage from "./components/GamePage/GamePage";
+import { GamePage } from "./components/GamePage/GamePage";
 import JoinGamePage from "./components/JoinGamePage/JoinGamePage.jsx";
 // import { Websocket } from "./components/websocket/websocket.jsx";
 
