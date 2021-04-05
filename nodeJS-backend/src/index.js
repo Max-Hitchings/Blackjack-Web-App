@@ -34,18 +34,20 @@ io.on("connection", (socket) => {
 
     try {
       await Games.findOne({ gameCode: gameCode }, async (err, result) => {
-        console.log(
-          "result",
-          result.players,
-          result.players.includes(socket.id)
-        );
-
-        if (!result.players.includes(socket.id)) {
-          const games = await Games.findOneAndUpdate(
-            { gameCode: gameCode },
-            { $push: { players: socket.id } },
-            { useFindAndModify: false }
+        if (result !== null) {
+          console.log(
+            "result",
+            result.players,
+            result.players.includes(socket.id)
           );
+
+          if (!result.players.includes(socket.id)) {
+            const games = await Games.findOneAndUpdate(
+              { gameCode: gameCode },
+              { $push: { players: socket.id } },
+              { useFindAndModify: false }
+            );
+          }
         }
       });
     } catch (err) {
