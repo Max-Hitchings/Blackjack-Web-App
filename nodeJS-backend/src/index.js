@@ -1,5 +1,4 @@
 require("dotenv").config();
-const { verifyGame } = require("./util/verifyGame");
 const express = require("express");
 const fetch = require("node-fetch");
 const Games = require("./models/games.js");
@@ -44,7 +43,8 @@ io.on("connection", (socket) => {
         if (!result.players.includes(socket.id)) {
           const games = await Games.findOneAndUpdate(
             { gameCode: gameCode },
-            { $push: { players: socket.id } }
+            { $push: { players: socket.id } },
+            { useFindAndModify: false }
           );
         }
       });
@@ -59,13 +59,17 @@ io.on("connection", (socket) => {
 
   socket.on("pickup", async ({ gameCode }, callBack) => {
     console.log("recived");
-    // const game = await Games.findOne({ gameCode: gameCode }).exec();
-
+    const game = await Games.findOne({ gameCode: gameCode }).exec();
+    const queryStart = Date.now();
     const newGame = await Games.findOneAndUpdate(
       { gameCode: gameCode },
-      { $pop: { cards: -1 } }
+      { $pop: { cards: -1 } },
+      { useFindAndModify: false }
     );
-    console.log(newGame.cards[0]);
+    console.log(`time elapsed: ${Date.now() - queryStart}`);
+
+    // console.log(newGame.cards[0]);
+    socket.emit("send-card", "shush");
     await callBack(newGame.cards[0]);
   });
 
@@ -78,7 +82,7 @@ io.of("/").adapter.on("create-room", (room) => {
   console.log(`room ${room} was created`);
 });
 
-const LISTEN_PORT = process.env.LISTEN_PORT || 4080;
+const LISTEN_PORT = process.env.LISTEN_PORT || 4040;
 
 http.listen(LISTEN_PORT, () => {
   console.log(`listening on *:${LISTEN_PORT}`);

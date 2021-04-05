@@ -1,8 +1,9 @@
 require("dotenv").config();
-const { verifyGame } = require("./util/verifyGame");
-const { response } = require("express");
+const express = require("express");
 const fetch = require("node-fetch");
+const Games = require("./models/games.js");
 const app = require("express")();
+const mongoose = require("mongoose");
 const http = require("http").createServer(app);
 const io = require("socket.io")(http, {
   cors: {
@@ -11,74 +12,63 @@ const io = require("socket.io")(http, {
   },
 });
 
+mongoose.connect(process.env.DATABASE_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const db = mongoose.connection;
+db.on("error", (err) => console.error(err));
+db.once("open", () => console.error("Connected to Database"));
+
+app.use(express.json());
 app.get("/", (req, res) => {
   res.send("<h2>Blackjack WS Server</h2>");
 });
 
+const apiRouter = require("./routes/api");
+app.use("/api", apiRouter);
+
 io.on("connection", (socket) => {
-  console.log("a user connected", socket.id);
-  socket.emit("hello", "hello world from NodeJS");
+  socket.on("join-game", async ({ gameCode }, cb) => {
+    socket.join(gameCode);
 
-  socket.on("join-game", async ({ gameCode, userHost }, callback) => {
-    console.log({ gameCode, userHost });
+    try {
+      await Games.findOne({ gameCode: gameCode }, async (err, result) => {
+        console.log(
+          "result",
+          result.players,
+          result.players.includes(socket.id)
+        );
 
-    if (await verifyGame(gameCode)) {
-      socket.join(gameCode);
+        if (!result.players.includes(socket.id)) {
+          const games = await Games.findOneAndUpdate(
+            { gameCode: gameCode },
+            { $push: { players: socket.id } }
+          );
+        }
+      });
+    } catch (err) {
+      console.log("error:", err);
     }
-    console.log(socket.rooms);
-    callback({ status: "ok" });
-    //const gameVerified = await verifyGame(gameCode);
   });
 
   socket.on("leave-game", async ({ gameCode }) => {
-    console.log({ gameCode });
     socket.leave(gameCode);
-    console.log(socket.rooms);
-    //const gameVerified = await verifyGame(gameCode);
   });
 
-  socket.on("test", ({ payload }) => {
-    console.log(payload);
+  socket.on("pickup", async ({ gameCode }, callBack) => {
+    console.log("recived");
+    // const game = await Games.findOne({ gameCode: gameCode }).exec();
+    const queryStart = Date.now();
+    const newGame = await Games.findOneAndUpdate(
+      { gameCode: gameCode },
+      { $pop: { cards: -1 } }
+    );
+    console.log(`time elapsed: ${Date.now() - queryStart}`);
+
+    console.log(newGame.cards[0]);
+    await callBack(newGame.cards[0]);
   });
-  /*
-  socket.on("salutations", ({ gameCode, sessionKey }) => {
-    const requestData = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        code: "D77E9",
-      }),
-    };
-
-    fetch("http://127.0.0.1:8000/api/verify-game", requestData)
-      .then((response) => console.log(response))
-      .catch((error) => console.error(error));
-  });
-
-  socket.on("init", (socket, payload) => {
-    console.log("Checking room");
-
-    if (typeof payload.gameCode === "undefined") {
-      console.log("has property");
-    } else {
-      console.log("undifined");
-    }
-    const requestData = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        code: gameCode,
-      }),
-    };
-
-    fetch("http://127.0.0.1:8000/api/verify-game", requestData)
-      .then((response) => {
-        //console.log(response);
-        socket.emit("init-response", response);
-      })
-      .catch((error) => console.error(error));
-  });
-  */
 
   socket.on("disconnect", () => {
     console.log("user disconnected", socket.id);
