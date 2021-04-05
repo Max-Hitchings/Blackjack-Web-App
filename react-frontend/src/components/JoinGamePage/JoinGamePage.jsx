@@ -1,14 +1,4 @@
 import React, { useState, useEffect } from "react";
-import {
-  FormControl,
-  FormLabel,
-  Flex,
-  Box,
-  Input,
-  Button,
-  Heading,
-  FormErrorMessage,
-} from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
 export default function JoinGamePage() {
@@ -51,7 +41,7 @@ export default function JoinGamePage() {
   return (
     <>
       <div className="pokerBackground joinGamePage-Background">
-        <Flex
+        {/* <Flex
           width="full"
           height="100vh"
           justifyContent="center"
@@ -85,7 +75,7 @@ export default function JoinGamePage() {
               </form>
             </Box>
           </Box>
-        </Flex>
+        </Flex> */}
       </div>
     </>
   );
