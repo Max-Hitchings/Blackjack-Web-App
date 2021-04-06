@@ -10,7 +10,7 @@ const styles = {
         ? "linear-gradient(-45deg, #27e7ee 10%, #35bdc2 60%)"
         : "linear-gradient(-45deg, #21f38a 10%, #33bd78 60%)",
     border: 0,
-    borderRadius: 3,
+    borderRadius: (props) => props.borderRadius,
     boxShadow: (props) =>
       props.variant === "Secondary"
         ? "0 3px 5px 2px rgba(105, 225, 255, .3)"
@@ -19,6 +19,7 @@ const styles = {
     height: 48,
     padding: (props) => `0 ${props.p}px`,
     margin: (props) => `${props.m}px`,
+    fontWeight: "700",
   },
 };
 
@@ -30,14 +31,13 @@ export function MyBaseComponent(props) {
 Button.propTypes = {
   classes: PropTypes.object.isRequired,
   variant: PropTypes.oneOf(["Primary", "Secondary"]).isRequired,
-  textColor: PropTypes.string,
 };
 
 Button.defaultProps = {
-  textColor: "white",
   p: "30",
   m: "0",
   textColor: "white",
+  borderRadius: 20,
 };
 
 export const StyledButton = withStyles(styles)(Button);

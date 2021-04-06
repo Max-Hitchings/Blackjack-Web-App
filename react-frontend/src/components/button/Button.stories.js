@@ -8,16 +8,17 @@ export default {
   argTypes: {
     variant: {
       control: {
-        type: "radio",
+        type: "inline-radio",
         options: ["Primary", "Secondary"],
       },
     },
     textColor: {
-      control: {
-        type: "color",
-        defaultValue: "#ffffff",
-      },
+      control: "color",
+      defaultValue: "black",
     },
+    borderRadius: { control: "number", defaultValue: 20 },
+    m: { control: "number", defaultValue: 0 },
+    p: { control: "number", defaultValue: 30 },
   },
 };
 
