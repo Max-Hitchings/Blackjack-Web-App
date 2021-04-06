@@ -1,10 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  FormHelperText,
+  Typography,
+  Card,
+  Grid,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { StyledButton } from "../button/Button.jsx";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    position: "absolute",
+    width: "100vw",
+    height: "100vh",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    height: "75px",
+    display: "flex",
+    alignItems: "center",
+  },
+  card: {
+    backgroundColor: "transparent",
+  },
+}));
+
 export default function JoinGamePage() {
+  const classes = useStyles();
+  const history = useHistory();
+
   const [gameCode, setgameCode] = useState("");
   const [codeValid, setcodeValid] = useState(false);
-  const history = useHistory();
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -40,43 +74,48 @@ export default function JoinGamePage() {
 
   return (
     <>
-      <div className="pokerBackground joinGamePage-Background">
-        {/* <Flex
-          width="full"
-          height="100vh"
-          justifyContent="center"
-          alignSelf="center"
-        >
-          <Box
-            style={{
-              position: "absolute",
-              top: "225px",
-            }}
-          >
-            <Box textAlign="center">
-              <Heading>Join Game</Heading>
-            </Box>
-            <Box my={4} textAlign="left">
-              <form onSubmit={handleFormSubmit}>
-                <FormControl isInvalid={codeValid}>
-                  <FormLabel>Game Code</FormLabel>
-                  <Input
-                    type="code"
-                    onChange={handleGameCodeChange}
-                    value={gameCode}
-                    placeholder="*****"
-                    maxLength="5"
-                  />
-                  <FormErrorMessage>Invalid Code </FormErrorMessage>
-                </FormControl>
-                <Button width="full" mt={4} type="submit">
-                  Join Game
-                </Button>
-              </form>
-            </Box>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Card className={classes.card} raised={false}>
+          <Box textAlign="center">
+            <Typography>Join Game</Typography>
           </Box>
-        </Flex> */}
-      </div>
+          <Box my={4} textAlign="left">
+            <form onSubmit={handleFormSubmit}>
+              <FormControl isInvalid={codeValid}>
+                <FormLabel>Game Code</FormLabel>
+                <Input
+                  type="code"
+                  onChange={handleGameCodeChange}
+                  value={gameCode}
+                  placeholder="*****"
+                  maxLength="5"
+                />
+                {codeValid ? (
+                  <FormHelperText disabled={true} error={true}>
+                    Invalid Code
+                  </FormHelperText>
+                ) : (
+                  ""
+                )}
+              </FormControl>
+              <div>
+                <div className={classes.buttonContainer}>
+                  <StyledButton fullWidth="full" type="submit">
+                    Join Game
+                  </StyledButton>
+                </div>
+              </div>
+            </form>
+          </Box>
+        </Card>
+      </Grid>
     </>
   );
 }
