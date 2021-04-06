@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { homePage } from "./components/homePage/homePage";
+import MainMenu from "./components/homePage/MainMenu";
 import { GamePage } from "./components/GamePage/GamePage";
 import JoinGamePage from "./components/JoinGamePage/JoinGamePage.jsx";
 // import { Websocket } from "./components/websocket/websocket.jsx";
@@ -10,8 +10,8 @@ export default function AppRoutes() {
     //https://reactrouter.com/web/guides/quick-start
     <Router>
       <Switch>
-        <Route exact path="/" component={homePage} />
-        <Route exact path="/create" component={homePage} />
+        <Route exact path="/" component={MainMenu} />
+        <Route exact path="/create" component={MainMenu} />
         <Route exact path="/join" component={JoinGamePage} />
         {/* <Route path="/socket" component={Websocket} /> */}
         <Route path="/game/:gameCode" component={GamePage} />
