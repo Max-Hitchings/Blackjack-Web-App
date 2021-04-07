@@ -6,9 +6,11 @@ import {
   FormControl,
   FormLabel,
   Input,
+  TextField,
   FormHelperText,
   Typography,
   Card,
+  CardHeader,
   Grid,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -30,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     backgroundColor: "transparent",
+  },
+  boldText: {
+    fontWeight: 700,
   },
 }));
 
@@ -84,13 +89,19 @@ export default function JoinGamePage() {
       >
         <Card className={classes.card} raised={false}>
           <Box textAlign="center">
-            <Typography>Join Game</Typography>
+            <Typography
+              variant="h5"
+              component="h1"
+              className={classes.boldText}
+            >
+              Join Game
+            </Typography>
           </Box>
           <Box my={4} textAlign="left">
             <form onSubmit={handleFormSubmit}>
               <FormControl isInvalid={codeValid}>
-                <FormLabel>Game Code</FormLabel>
-                <Input
+                <FormLabel className={classes.boldText}>Game Code</FormLabel>
+                <TextField
                   type="code"
                   onChange={handleGameCodeChange}
                   value={gameCode}
