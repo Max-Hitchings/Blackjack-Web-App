@@ -59,20 +59,17 @@ io.on("connection", (socket) => {
     socket.leave(gameCode);
   });
 
-  socket.on("pickup", async ({ gameCode }, callBack) => {
-    console.log("recived");
-    const game = await Games.findOne({ gameCode: gameCode }).exec();
-    const queryStart = Date.now();
-    const newGame = await Games.findOneAndUpdate(
-      { gameCode: gameCode },
-      { $pop: { cards: -1 } },
-      { useFindAndModify: false }
-    );
-    console.log(`time elapsed: ${Date.now() - queryStart}`);
-
-    // console.log(newGame.cards[0]);
-    socket.emit("send-card", "shush");
-    await callBack(newGame.cards[0]);
+  socket.on("pickupCard", async ({ gameCode }, callBack) => {
+    try {
+      const newGame = await Games.findOneAndUpdate(
+        { gameCode: gameCode },
+        { $pop: { cards: -1 } },
+        { useFindAndModify: false }
+      );
+      callBack(newGame.cards[0]);
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   socket.on("disconnect", () => {

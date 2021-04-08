@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
+import { StyledButton } from "../button/Button.jsx";
 // import image from "./4.png";
 //import images from "./images";
 require("dotenv").config();
@@ -8,7 +9,7 @@ require("dotenv").config();
 export function GamePage({ ...props }) {
   const gameCode = props.match.params.gameCode;
   const location = useLocation();
-  const socket = io(process.env.EXPRESSJS_URL);
+  const socket = io("http://localhost:4040/");
 
   try {
     var initHost = location.state.userHost;
@@ -43,21 +44,15 @@ export function GamePage({ ...props }) {
       });
     });
 
-    socket.on("send-card", (res) => console.log(res));
-
     return () => {
       socket.emit("leave-game", { gameCode: gameCode });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const pickupCard = async () => {
-    console.log("sent");
-    const queryStart = Date.now();
-    await socket.emit("pickup", { gameCode: gameCode }, (res) => {
-      console.log("sent", res);
+  const pickupCard = () => {
+    socket.emit("pickupCard", { gameCode }, (res) => {
       setcurrentCardImage(`/images/cards/${res.Suit}/${res.Value}.png`);
-      console.log(`total query time: ${Date.now() - queryStart}`);
     });
   };
 
@@ -72,9 +67,8 @@ export function GamePage({ ...props }) {
       >
         You are in a game with the code {gameCode}
       </div>
-      <button onClick={pickupCard}>Pickup card</button>
+      <StyledButton onClick={pickupCard}>Pickup card</StyledButton>
       <img src={currentCardImage} alt="" width="200" height="350" />
-      <div>cards: {}</div>
     </div>
   );
 }
