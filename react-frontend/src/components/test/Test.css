@@ -1,0 +1,36 @@
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+  width: 100%;
+}
+
+.button {
+  font-family: Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #f5f5f5;
+  padding: 1rem 3rem;
+}
+
+.button {
+  background: linear-gradient(
+    -45deg,
+    #ef5350 0 calc(50% - 10px),
+    #f5f5f5 calc(50% - 5px) calc(50% + 5px),
+    #b71c1c calc(50% + 10px) 100%
+  );
+  background-size: 250% 100%;
+  background-position: 100% 50%;
+
+  transition: 0.5s all;
+}
+
+.button:hover,
+.button:focus {
+  background-position: 0% 50%;
+  transition: 0.5s all;
+}

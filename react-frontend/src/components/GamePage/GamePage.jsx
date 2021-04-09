@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
-import { StyledButton } from "../button/Button.jsx";
-// import image from "./4.png";
-//import images from "./images";
+import { StyledButton } from "../material-ui/Button/Button.jsx";
+
 require("dotenv").config();
 
 export function GamePage({ ...props }) {
   const gameCode = props.match.params.gameCode;
   const location = useLocation();
-  const socket = io("http://localhost:4040/");
+  const socket = io("http://192.168.0.15:4040/");
+  // const socket = io(http://127.0.0.1:4040/");
 
   try {
     var initHost = location.state.userHost;
@@ -19,7 +19,10 @@ export function GamePage({ ...props }) {
   }
 
   const [userHost] = useState(initHost);
-  const [currentCardImage, setcurrentCardImage] = useState("./4.png");
+  const [currentCardImage, setcurrentCardImage] = useState(
+    "/images/cards/cardBack.png"
+  );
+  const [playerId, setplayerId] = useState();
 
   useEffect(() => {
     console.log("user is host:", userHost);
@@ -44,11 +47,26 @@ export function GamePage({ ...props }) {
       });
     });
 
+    window.addEventListener("beforeunload", (ev) => {
+      ev.preventDefault();
+      console.log("shushuhuhuhuh");
+      return leaveGame();
+    });
+
     return () => {
-      socket.emit("leave-game", { gameCode: gameCode });
+      window.removeEventListener("beforeunload", (ev) => {
+        ev.preventDefault();
+        console.log("shushuhuhusss11111111111111111huh");
+        return leaveGame();
+      });
+      console.log("leaveing");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const leaveGame = () => {
+    socket.emit("leave-game", { gameCode: gameCode });
+  };
 
   const pickupCard = () => {
     socket.emit("pickupCard", { gameCode }, (res) => {

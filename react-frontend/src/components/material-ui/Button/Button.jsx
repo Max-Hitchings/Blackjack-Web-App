@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -20,13 +20,9 @@ const styles = {
     padding: (props) => `0 ${props.p}px`,
     margin: (props) => `${props.m}px`,
     fontWeight: "700",
+    width: (props) => (props.fullWidth ? "100%" : ""),
   },
 };
-
-export function MyBaseComponent(props) {
-  const { classes, color, ...other } = props;
-  return <button className={`${classes.root} styledButton`} {...other} />;
-}
 
 Button.propTypes = {
   classes: PropTypes.object.isRequired,
