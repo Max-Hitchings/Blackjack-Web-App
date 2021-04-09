@@ -7,8 +7,11 @@ apiRouter.get("/", (req, res) => {
 });
 
 apiRouter.post("/create-game", async (req, res) => {
+  const playerId = req.body.playerId;
+
   const newGame = new Games({
     gameCode: Math.random().toString(36).toUpperCase().substring(2, 7),
+    players: [playerId],
   });
 
   try {
@@ -31,6 +34,32 @@ apiRouter.post("/verify-game", async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
+});
+
+apiRouter.post("/join-game", async (req, res) => {
+  const playerId = req.body.playerId;
+  const gameCode = req.body.gameCode;
+
+  await Games.findOne({ gameCode: gameCode }, async (err, result) => {
+    if (err) {
+      res.status(500).json({ error: "DB error" });
+    }
+
+    if (result !== null) {
+      if (!result.players.includes(playerId)) {
+        await Games.findOneAndUpdate(
+          { gameCode: gameCode },
+          { $push: { players: playerId } },
+          { useFindAndModify: false }
+        );
+        res.status(202).json({ message: "Successfully joined game" });
+      } else {
+        res.status(400).json({ error: "user already in game" });
+      }
+    } else {
+      res.status(404).json({ error: "Game doesn't exist" });
+    }
+  });
 });
 
 module.exports = apiRouter;
