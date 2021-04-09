@@ -15,13 +15,16 @@ export const generateCards = () => {
     "Queen",
     "King",
   ];
+  const decks = 1;
 
   let deck = [];
 
-  for (let i = 0; i < suits.length; i++) {
-    for (let x = 0; x < values.length; x++) {
-      let card = { Value: values[x], Suit: suits[i] };
-      deck.push(card);
+  for (let i = 0; i < decks; i++) {
+    for (let i = 0; i < suits.length; i++) {
+      for (let x = 0; x < values.length; x++) {
+        let card = { Value: values[x], Suit: suits[i] };
+        deck.push(card);
+      }
     }
   }
 
