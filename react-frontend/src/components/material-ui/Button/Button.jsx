@@ -10,7 +10,7 @@ const styles = {
         ? "linear-gradient(-45deg, #27e7ee 10%, #35bdc2 60%)"
         : "linear-gradient(-45deg, #21f38a 10%, #33bd78 60%)",
     border: 0,
-    borderRadius: (props) => props.borderRadius,
+    borderRadius: 20,
     boxShadow: (props) =>
       props.variant === "Secondary"
         ? "0 3px 5px 2px rgba(105, 225, 255, .3)"
@@ -26,7 +26,9 @@ const styles = {
 
 Button.propTypes = {
   classes: PropTypes.object.isRequired,
-  variant: PropTypes.oneOf(["Primary", "Secondary"]).isRequired,
+  variant: PropTypes.oneOf(["Primary", "Secondary"]),
+  textColor: PropTypes.string,
+  borderRadius: PropTypes.number,
 };
 
 Button.defaultProps = {
