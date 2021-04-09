@@ -2,10 +2,6 @@ const express = require("express");
 const apiRouter = express.Router();
 const Games = require("../models/games");
 
-const generateCards = () => {
-  return ["card1", "card2", "card3", "card4", "..."];
-};
-
 apiRouter.get("/", (req, res) => {
   res.status(200).json({ hello: "shush" });
 });
