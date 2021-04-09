@@ -4,14 +4,17 @@ const Games = require("../models/games");
 
 apiRouter.get("/", (req, res) => {
   res.status(200).json({ hello: "shush" });
+  res.status(200).json({ hello: "TEST" });
 });
 
 apiRouter.post("/create-game", async (req, res) => {
   const playerId = req.body.playerId;
 
+  const newPlayers = playerId === null ? [playerId] : [];
   const newGame = new Games({
     gameCode: Math.random().toString(36).toUpperCase().substring(2, 7),
     players: [playerId],
+    players: newPlayers,
   });
 
   try {
@@ -59,6 +62,7 @@ apiRouter.post("/join-game", async (req, res) => {
     } else {
       res.status(404).json({ error: "Game doesn't exist" });
     }
+    res.status(500);
   });
 });
 
