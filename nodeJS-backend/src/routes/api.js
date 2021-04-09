@@ -3,7 +3,6 @@ const apiRouter = express.Router();
 const Games = require("../models/games");
 
 apiRouter.get("/", (req, res) => {
-  res.status(200).json({ hello: "shush" });
   res.status(200).json({ hello: "TEST" });
 });
 
@@ -13,7 +12,6 @@ apiRouter.post("/create-game", async (req, res) => {
   const newPlayers = playerId === null ? [playerId] : [];
   const newGame = new Games({
     gameCode: Math.random().toString(36).toUpperCase().substring(2, 7),
-    players: [playerId],
     players: newPlayers,
   });
 
@@ -64,6 +62,42 @@ apiRouter.post("/join-game", async (req, res) => {
     }
     res.status(500);
   });
+});
+
+apiRouter.post("/leave-game", async (req, res) => {
+  console.log("endPoint hit", req.body.gameCode);
+
+  try {
+    const playerId = req.body.playerId;
+    const gameCode = req.body.gameCode;
+
+    await Games.findOne({ gameCode: gameCode }, async (err, result) => {
+      if (err) {
+        res.status(500).json({ error: "DB error" });
+      }
+
+      if (result !== null) {
+        if (result.players.includes(playerId)) {
+          await Games.findOneAndUpdate(
+            { gameCode: gameCode },
+            { $pull: { players: playerId } },
+            { useFindAndModify: false }
+          );
+          res.status(202).json({ message: "Successfully left game" });
+        } else {
+          res.status(400).json({
+            error: `user not in game with code ${gameCode}`,
+            // players: result.players,
+          });
+        }
+      } else {
+        res.status(404).json({ error: "Game doesn't exist" });
+      }
+    });
+  } catch (err) {
+    console.error(err);
+  }
+  //res.status(400).json({ test: "failed" });
 });
 
 module.exports = apiRouter;
