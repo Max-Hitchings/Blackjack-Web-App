@@ -51,6 +51,9 @@ export default function MainMenu() {
     const requestData = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        playerId: localStorage.getItem("playerId"),
+      }),
     };
 
     fetch("/api/create-game/", requestData)

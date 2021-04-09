@@ -51,10 +51,11 @@ export default function JoinGamePage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         gameCode: gameCode,
+        playerId: localStorage.getItem("playerId"),
       }),
     };
 
-    const response = await fetch("/api/verify-game", requestData);
+    const response = await fetch("/api/join-game", requestData);
     if (response.ok) {
       history.push({
         pathname: `/game/${gameCode}`,
