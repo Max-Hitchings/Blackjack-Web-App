@@ -1,13 +1,22 @@
+import { leaveGame } from "./util/leaveGame";
+
 require("dotenv").config();
 const express = require("express");
 const fetch = require("node-fetch");
 const Games = require("./models/games.js");
 const app = require("express")();
+var cors = require("cors");
+app.use(cors());
+
 const mongoose = require("mongoose");
 const http = require("http").createServer(app);
 const io = require("socket.io")(http, {
   cors: {
-    origin: ["http://127.0.0.1:3000", "http://localhost:3000"],
+    origin: [
+      "http://127.0.0.1:3000",
+      "http://localhost:3000",
+      "http://192.168.0.15:3000",
+    ],
     methods: ["GET", "POST"],
   },
 });
@@ -55,8 +64,9 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("leave-game", async ({ gameCode }) => {
+  socket.on("leave-game", async ({ gameCode, playerId }) => {
     socket.leave(gameCode);
+    console.log("Removed test = ", gameCode, playerId);
   });
 
   socket.on("pickupCard", async ({ gameCode }, callBack) => {
@@ -72,7 +82,9 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect", async () => {
+    const code = "X26X8";
+    await leaveGame({ Games, code, socket });
     console.log("user disconnected", socket.id);
   });
 });
