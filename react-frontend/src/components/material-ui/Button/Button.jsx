@@ -8,12 +8,16 @@ const styles = {
     background: (props) =>
       props.variant === "Secondary"
         ? "linear-gradient(-45deg, #27e7ee 10%, #35bdc2 60%)"
+        : props.variant === "Red"
+        ? "linear-gradient(-45deg, #f32121 10%, #bd3333 60%)"
         : "linear-gradient(-45deg, #21f38a 10%, #33bd78 60%)",
     border: 0,
     borderRadius: 20,
     boxShadow: (props) =>
       props.variant === "Secondary"
         ? "0 3px 5px 2px rgba(105, 225, 255, .3)"
+        : props.variant === "Red"
+        ? "0 3px 5px 2px rgba(199, 71, 71, 0.3)"
         : "0 3px 5px 2px rgba(75, 199, 71, .3)",
     color: (props) => props.textColor,
     height: 48,
@@ -26,7 +30,7 @@ const styles = {
 
 Button.propTypes = {
   classes: PropTypes.object.isRequired,
-  variant: PropTypes.oneOf(["Primary", "Secondary"]),
+  variant: PropTypes.oneOf(["Primary", "Secondary", "Red"]),
   textColor: PropTypes.string,
   borderRadius: PropTypes.number,
 };
@@ -36,6 +40,7 @@ Button.defaultProps = {
   m: "0",
   textColor: "white",
   borderRadius: 20,
+  variant: "Primary",
 };
 
 export const StyledButton = withStyles(styles)(Button);
