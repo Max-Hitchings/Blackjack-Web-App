@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { generateCards } = require("../util/generateCards");
 
 const gameSchema = new mongoose.Schema({
   gameCode: {
@@ -9,7 +8,7 @@ const gameSchema = new mongoose.Schema({
     unique: true,
     dropDups: true,
   },
-  cards: { type: Array, required: true, default: generateCards() },
+  cards: { type: Array, required: true },
   players: { type: Array, required: true, default: [] },
 });
 

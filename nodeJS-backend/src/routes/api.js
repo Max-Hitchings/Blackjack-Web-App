@@ -1,6 +1,7 @@
 const express = require("express");
 const apiRouter = express.Router();
 const Games = require("../models/games");
+const { generateCards } = require("../util/generateCards");
 
 apiRouter.get("/", (req, res) => {
   res.status(200).json({ hello: "TEST" });
@@ -12,6 +13,7 @@ apiRouter.post("/create-game", async (req, res) => {
   const newPlayers = playerId !== null ? [playerId] : [];
   const newGame = new Games({
     gameCode: Math.random().toString(36).toUpperCase().substring(2, 7),
+    cards: generateCards(),
     players: newPlayers,
   });
 

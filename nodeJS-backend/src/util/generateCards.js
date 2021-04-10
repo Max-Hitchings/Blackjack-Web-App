@@ -29,7 +29,10 @@ export const generateCards = () => {
   }
 
   for (let i = deck.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * i);
+    var rand = Math.random() * 51 * decks;
+    console.log(rand);
+
+    let j = Math.floor(rand);
     let temp = deck[i];
     deck[i] = deck[j];
     deck[j] = temp;
