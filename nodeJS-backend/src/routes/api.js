@@ -27,13 +27,20 @@ apiRouter.post("/create-game", async (req, res) => {
 
 apiRouter.post("/verify-game", async (req, res) => {
   const gameCode = req.body.gameCode;
-  console.log("verifying");
+  const playerId = req.body.playerId;
 
   try {
-    let result = await Games.exists({ gameCode: gameCode });
-    result === true
-      ? res.status(200).json({ result: result, querry: gameCode })
-      : res.status(400).json({});
+    let result = await Games.findOne({ gameCode: gameCode });
+
+    if (result !== null) {
+      if (result.players.includes(playerId)) {
+        res.status(200).json({ message: "user is in the game" });
+      } else {
+        res.status(400).json({ error: "you are not in the game" });
+      }
+    } else {
+      res.status(400).json({ error: "game not found" });
+    }
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
