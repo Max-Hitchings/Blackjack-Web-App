@@ -22,7 +22,7 @@ export function GamePage({ ...props }) {
   const [currentCardImage, setcurrentCardImage] = useState(
     "/images/cards/cardBack.png"
   );
-  const [playerId, setplayerId] = useState();
+  const [playerId, setplayerId] = useState(localStorage.getItem("playerId"));
 
   useEffect(() => {
     console.log("user is host:", userHost);
@@ -37,8 +37,12 @@ export function GamePage({ ...props }) {
       Connected with id: ${socket.id}
       `);
 
-      socket.emit("join-game", { gameCode: gameCode });
-      socket.on("init-response", ({ game_code }) => console.log(game_code));
+      // socket.emit("join-game", { gameCode: gameCode });
+      // socket.on("init-response", ({ game_code }) => console.log(game_code));
+
+      socket.on("disconnected", () => {
+        socket.emit("leave-game", { gameCode, playerId });
+      });
 
       socket.on("connect_error", () => {
         setTimeout(() => {
@@ -49,14 +53,14 @@ export function GamePage({ ...props }) {
 
     window.addEventListener("beforeunload", (ev) => {
       ev.preventDefault();
-      console.log("shushuhuhuhuh");
-      return leaveGame();
+      console.log("test");
+      return "hi";
     });
 
     return () => {
       window.removeEventListener("beforeunload", (ev) => {
         ev.preventDefault();
-        console.log("shushuhuhusss11111111111111111huh");
+        console.log("test");
         return leaveGame();
       });
       console.log("leaveing");
@@ -64,8 +68,23 @@ export function GamePage({ ...props }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const leaveGame = () => {
-    socket.emit("leave-game", { gameCode: gameCode });
+  const leaveGame = async () => {
+    const requestData = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        playerId: localStorage.getItem("playerId"),
+        gameCode: gameCode,
+      }),
+    };
+
+    const res = await fetch(
+      "http://127.0.0.1:4040/api/leave-game",
+      requestData
+    );
+    if (res.ok) {
+      window.location.replace("http://127.0.0.1:3000");
+    }
   };
 
   const pickupCard = () => {
@@ -86,7 +105,13 @@ export function GamePage({ ...props }) {
         You are in a game with the code {gameCode}
       </div>
       <StyledButton onClick={pickupCard}>Pickup card</StyledButton>
+
       <img src={currentCardImage} alt="" width="200" height="350" />
+      <div style={{ marginTop: "20px" }}>
+        <StyledButton variant="Red" onClick={leaveGame}>
+          Leave Game
+        </StyledButton>
+      </div>
     </div>
   );
 }
