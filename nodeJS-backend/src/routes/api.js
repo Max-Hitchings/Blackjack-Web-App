@@ -9,7 +9,7 @@ apiRouter.get("/", (req, res) => {
 apiRouter.post("/create-game", async (req, res) => {
   const playerId = req.body.playerId;
 
-  const newPlayers = playerId === null ? [playerId] : [];
+  const newPlayers = playerId !== null ? [playerId] : [];
   const newGame = new Games({
     gameCode: Math.random().toString(36).toUpperCase().substring(2, 7),
     players: newPlayers,
@@ -65,8 +65,6 @@ apiRouter.post("/join-game", async (req, res) => {
 });
 
 apiRouter.post("/leave-game", async (req, res) => {
-  console.log("endPoint hit", req.body.gameCode);
-
   try {
     const playerId = req.body.playerId;
     const gameCode = req.body.gameCode;
@@ -78,11 +76,15 @@ apiRouter.post("/leave-game", async (req, res) => {
 
       if (result !== null) {
         if (result.players.includes(playerId)) {
-          await Games.findOneAndUpdate(
+          const game = await Games.findOneAndUpdate(
             { gameCode: gameCode },
             { $pull: { players: playerId } },
             { useFindAndModify: false }
           );
+          if (game.players.length <= 1) {
+            await Games.deleteOne({ gameCode: gameCode });
+          }
+          console.log(`player left game ${gameCode}. playerId: ${playerId}`);
           res.status(202).json({ message: "Successfully left game" });
         } else {
           res.status(400).json({
