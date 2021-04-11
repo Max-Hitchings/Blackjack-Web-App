@@ -14,7 +14,9 @@ apiRouter.post("/create-game", async (req, res) => {
   const newGame = new Games({
     gameCode: Math.random().toString(36).toUpperCase().substring(2, 7),
     cards: generateCards(),
-    players: newPlayers,
+    // players: newPlayers,
+    players: [{ playerId: playerId, cards: [] }],
+    hostId: playerId,
   });
 
   try {
@@ -33,7 +35,7 @@ apiRouter.post("/verify-game", async (req, res) => {
     let result = await Games.findOne({ gameCode: gameCode });
 
     if (result !== null) {
-      if (result.players.includes(playerId)) {
+      if (result.players.filter((p) => p.playerId === playerId).length > 0) {
         res.status(200).json({ message: "user is in the game" });
       } else {
         res.status(400).json({ error: "you are not in the game" });
@@ -56,10 +58,10 @@ apiRouter.post("/join-game", async (req, res) => {
     }
 
     if (result !== null) {
-      if (!result.players.includes(playerId)) {
+      if (!result.players.filter((p) => p.playerId === playerId).length > 0) {
         await Games.findOneAndUpdate(
           { gameCode: gameCode },
-          { $push: { players: playerId } },
+          { $push: { players: { playerId: playerId, cards: [] } } },
           { useFindAndModify: false }
         );
         res.status(202).json({ message: "Successfully joined game" });
@@ -84,10 +86,10 @@ apiRouter.post("/leave-game", async (req, res) => {
       }
 
       if (result !== null) {
-        if (result.players.includes(playerId)) {
+        if (result.players.filter((p) => p.playerId === playerId).length > 0) {
           const game = await Games.findOneAndUpdate(
             { gameCode: gameCode },
-            { $pull: { players: playerId } },
+            { $pull: { players: { playerId: playerId } } },
             { useFindAndModify: false }
           );
           if (game.players.length <= 1) {

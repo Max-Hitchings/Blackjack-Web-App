@@ -9,7 +9,15 @@ const gameSchema = new mongoose.Schema({
     dropDups: true,
   },
   cards: { type: Array, required: true },
-  players: { type: Array, required: true, default: [] },
+  // players: { type: Array, required: true, default: [] },
+  players: [
+    {
+      playerId: { type: String, required: true },
+      cards: { type: Array, required: true, default: [] },
+    },
+  ],
+  hostId: { type: String, required: true },
+  started: { type: Boolean, required: true, default: false },
 });
 
 module.exports = mongoose.model("Games", gameSchema);
