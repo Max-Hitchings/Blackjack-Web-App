@@ -69,7 +69,6 @@ export default function MainMenu() {
 
         history.push({
           pathname: `/game/${responseJson.gameCode}`,
-          state: { userHost: true },
         });
       })
       .catch((error) => console.error(error));

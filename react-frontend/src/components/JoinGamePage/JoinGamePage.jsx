@@ -59,7 +59,6 @@ export default function JoinGamePage() {
     if (response.ok) {
       history.push({
         pathname: `/game/${gameCode}`,
-        state: { userHost: false },
       });
     } else {
       setcodeValid(true);
