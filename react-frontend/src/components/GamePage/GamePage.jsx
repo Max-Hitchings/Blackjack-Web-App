@@ -96,7 +96,32 @@ export function GamePage({ ...props }) {
     });
   };
 
-  return (
+  const startGame = () => {
+    console.log("start game");
+    socket.emit("startGame", { gameCode });
+  };
+
+  const HoldingScreen = () => {
+    return (
+      <>
+        <h1>holding screen</h1>
+        <h1>code: {gameCode}</h1>
+        {players.map((player) => (
+          <h3>{player.playerId}</h3>
+        ))}
+        {host ? (
+          <StyledButton onClick={startGame}>Start Game</StyledButton>
+        ) : (
+          ""
+        )}
+        <StyledButton variant="Red" onClick={leaveGame}>
+          Leave Game
+        </StyledButton>
+      </>
+    );
+  };
+
+  const Game = () => (
     <div style={{ height: "100vh" }}>
       <div
         style={{
