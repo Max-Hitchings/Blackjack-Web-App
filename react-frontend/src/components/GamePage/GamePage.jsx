@@ -29,7 +29,10 @@ export function GamePage({ ...props }) {
       }),
     };
 
-    const response = await fetch("/api/verify-game", requestData);
+    const response = await fetch(
+      `${process.env.EXPRESSJS_URL}/api/verify-game`,
+      requestData
+    );
     if (!response.ok) {
       window.location.replace(`http://${window.location.host}`);
     }
@@ -90,7 +93,10 @@ export function GamePage({ ...props }) {
       }),
     };
 
-    const res = await fetch("/api/leave-game", requestData);
+    const res = await fetch(
+      `${process.env.EXPRESSJS_URL}/api/leave-game`,
+      requestData
+    );
     if (res.ok) {
       window.location.replace(`http://${window.location.host}`);
     }
