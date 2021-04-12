@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
 import { StyledButton } from "../material-ui/Button/Button.jsx";
+import { apiBaseUrl } from "../../util/constants";
 
 require("dotenv").config();
 
@@ -9,7 +10,7 @@ export function GamePage({ ...props }) {
   const gameCode = props.match.params.gameCode;
   const location = useLocation();
 
-  const socket = io(process.env.REACT_APP_EXPRESSJS_URL);
+  const socket = io(apiBaseUrl);
 
   const [gameState, setGameState] = useState("holding");
   const [players, setPlayers] = useState([]);
@@ -28,10 +29,7 @@ export function GamePage({ ...props }) {
       }),
     };
 
-    const response = await fetch(
-      `${process.env.REACT_APP_EXPRESSJS_URL}/api/verify-game`,
-      requestData
-    );
+    const response = await fetch(`${apiBaseUrl}/api/verify-game`, requestData);
     if (!response.ok) {
       window.location.replace(`http://${window.location.host}`);
     }
@@ -92,10 +90,7 @@ export function GamePage({ ...props }) {
       }),
     };
 
-    const res = await fetch(
-      `${process.env.REACT_APP_EXPRESSJS_URL}/api/leave-game`,
-      requestData
-    );
+    const res = await fetch(`${apiBaseUrl}/api/leave-game`, requestData);
     if (res.ok) {
       window.location.replace(`http://${window.location.host}`);
     }
