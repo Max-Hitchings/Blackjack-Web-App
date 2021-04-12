@@ -140,6 +140,20 @@ export function GamePage({ ...props }) {
           Leave Game
         </StyledButton>
       </div>
+      {players.map((player) => {
+        return (
+          <>
+            <h3>{player.playerId}</h3>
+            {player.cards.map((card) => (
+              <img
+                src={`/images/cards/${card.Suit}/${card.Value}.png`}
+                width="100"
+                height="175"
+              />
+            ))}
+          </>
+        );
+      })}
     </div>
   );
 }
