@@ -35,15 +35,14 @@ export function GamePage({ ...props }) {
     }
   }, []);
 
-  const [userHost] = useState(initHost);
   const [currentCardImage, setcurrentCardImage] = useState(
     "/images/cards/cardBack.png"
   );
   const [playerId, setplayerId] = useState(localStorage.getItem("playerId"));
 
   useEffect(() => {
-    console.log("user is host:", userHost);
-  }, [userHost]);
+    console.log(host);
+  }, [host]);
 
   useEffect(() => {
     console.log("connecting");
@@ -81,17 +80,14 @@ export function GamePage({ ...props }) {
       }),
     };
 
-    const res = await fetch(
-      "http://127.0.0.1:4040/api/leave-game",
-      requestData
-    );
+    const res = await fetch("/api/leave-game", requestData);
     if (res.ok) {
       window.location.replace("http://127.0.0.1:3000");
     }
   };
 
   const pickupCard = () => {
-    socket.emit("pickupCard", { gameCode }, (res) => {
+    socket.emit("pickupCard", { gameCode, playerId }, (res) => {
       setcurrentCardImage(`/images/cards/${res.Suit}/${res.Value}.png`);
     });
   };
@@ -156,4 +152,10 @@ export function GamePage({ ...props }) {
       })}
     </div>
   );
+
+  return gameState === "holding" ? (
+    <HoldingScreen />
+  ) : gameState === "running" ? (
+    <Game />
+  ) : null;
 }
