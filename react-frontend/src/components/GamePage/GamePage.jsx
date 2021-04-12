@@ -11,12 +11,23 @@ export function GamePage({ ...props }) {
   const socket = io("http://192.168.0.15:4040/");
   // const socket = io(http://127.0.0.1:4040/");
 
-  try {
-    var initHost = location.state.userHost;
-    initHost = initHost === undefined || initHost === false ? false : true;
-  } catch {
-    window.location.replace("http://127.0.0.1:3000");
-  }
+  const checkHost = () => {};
+
+  useEffect(async () => {
+    const requestData = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        playerId: localStorage.getItem("playerId"),
+        gameCode: gameCode,
+      }),
+    };
+
+    const response = await fetch("/api/verify-game", requestData);
+    if (!response.ok) {
+      window.location.replace(`http://${window.location.host}`);
+    }
+  }, []);
 
   const [userHost] = useState(initHost);
   const [currentCardImage, setcurrentCardImage] = useState(
