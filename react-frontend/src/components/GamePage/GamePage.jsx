@@ -68,20 +68,6 @@ export function GamePage({ ...props }) {
       });
     });
 
-    window.addEventListener("beforeunload", (ev) => {
-      ev.preventDefault();
-      console.log("test");
-      return "hi";
-    });
-
-    return () => {
-      window.removeEventListener("beforeunload", (ev) => {
-        ev.preventDefault();
-        console.log("test");
-        return leaveGame();
-      });
-      console.log("leaveing");
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
