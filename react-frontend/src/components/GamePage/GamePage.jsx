@@ -53,8 +53,18 @@ export function GamePage({ ...props }) {
       Connected with id: ${socket.id}
       `);
 
-      // socket.emit("join-game", { gameCode: gameCode });
-      // socket.on("init-response", ({ game_code }) => console.log(game_code));
+      socket.emit("joinGame", { gameCode });
+
+      socket.on("updatePlayers", ({ players, hostId }) => {
+        setPlayers([...players]);
+        if (hostId === localStorage.getItem("playerId")) {
+          setHost(true);
+        }
+      });
+
+      socket.on("gameStarted", () => {
+        setGameState("running");
+      });
 
       socket.on("disconnected", () => {
         socket.emit("leave-game", { gameCode, playerId });
@@ -82,7 +92,7 @@ export function GamePage({ ...props }) {
 
     const res = await fetch("/api/leave-game", requestData);
     if (res.ok) {
-      window.location.replace("http://127.0.0.1:3000");
+      window.location.replace(`http://${window.location.host}`);
     }
   };
 
