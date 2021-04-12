@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import { StyledButton } from "../material-ui/Button/Button.jsx";
+require("dotenv").config();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,7 +57,10 @@ export default function MainMenu() {
       }),
     };
 
-    fetch(`${process.env.EXPRESSJS_URL}/api/create-game/`, requestData)
+    fetch(
+      `${process.env.REACT_APP_EXPRESSJS_URL}/api/create-game/`,
+      requestData
+    )
       .then((response) => {
         if (response.status === 201) {
           return response.json();

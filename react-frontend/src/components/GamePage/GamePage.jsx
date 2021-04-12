@@ -9,8 +9,7 @@ export function GamePage({ ...props }) {
   const gameCode = props.match.params.gameCode;
   const location = useLocation();
 
-  const EXPRESSJS_URL = process.env.EXPRESSJS_URL || "http://localhost:6001/";
-  const socket = io(EXPRESSJS_URL);
+  const socket = io(process.env.REACT_APP_EXPRESSJS_URL);
 
   const [gameState, setGameState] = useState("holding");
   const [players, setPlayers] = useState([]);
@@ -30,7 +29,7 @@ export function GamePage({ ...props }) {
     };
 
     const response = await fetch(
-      `${process.env.EXPRESSJS_URL}/api/verify-game`,
+      `${process.env.REACT_APP_EXPRESSJS_URL}/api/verify-game`,
       requestData
     );
     if (!response.ok) {
@@ -94,7 +93,7 @@ export function GamePage({ ...props }) {
     };
 
     const res = await fetch(
-      `${process.env.EXPRESSJS_URL}/api/leave-game`,
+      `${process.env.REACT_APP_EXPRESSJS_URL}/api/leave-game`,
       requestData
     );
     if (res.ok) {
