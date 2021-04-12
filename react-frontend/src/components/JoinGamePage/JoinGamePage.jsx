@@ -56,7 +56,7 @@ export default function JoinGamePage() {
     };
 
     const response = await fetch(
-      `${process.env.EXPRESSJS_URL}/api/join-game`,
+      `${process.env.REACT_APP_EXPRESSJS_URL}/api/join-game`,
       requestData
     );
     if (response.ok) {
