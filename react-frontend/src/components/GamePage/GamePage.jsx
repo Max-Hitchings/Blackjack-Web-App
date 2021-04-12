@@ -8,7 +8,13 @@ require("dotenv").config();
 export function GamePage({ ...props }) {
   const gameCode = props.match.params.gameCode;
   const location = useLocation();
-  const socket = io("http://192.168.0.15:4040/");
+
+  const EXPRESSJS_URL = process.env.EXPRESSJS_URL || "http://localhost:6001/";
+  const socket = io(EXPRESSJS_URL);
+
+  const [gameState, setGameState] = useState("holding");
+  const [players, setPlayers] = useState([]);
+  const [host, setHost] = useState(false);
   // const socket = io(http://127.0.0.1:4040/");
 
   const checkHost = () => {};
