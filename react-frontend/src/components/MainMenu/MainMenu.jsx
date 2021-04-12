@@ -56,7 +56,7 @@ export default function MainMenu() {
       }),
     };
 
-    fetch("/api/create-game/", requestData)
+    fetch(`${process.env.EXPRESSJS_URL}/api/create-game/`, requestData)
       .then((response) => {
         if (response.status === 201) {
           return response.json();
