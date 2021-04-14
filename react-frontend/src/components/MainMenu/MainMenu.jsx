@@ -46,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MainMenu() {
+  console.log(apiBaseUrl);
+
   const classes = useStyles();
   const history = useHistory();
 
