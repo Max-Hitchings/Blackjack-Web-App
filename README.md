@@ -15,11 +15,11 @@
 - [x] Ability to create games
 - [x] Ability to join games
 - [x] Add WebSockets
-- [ ] Room page
-- [ ] Backend card system
-- [ ] Dispatch cards to all users (Web Sockets??)
-- [ ] Take user input
-- [ ] Dealer output
+- [ ] Room page (Started)
+- [x] Backend card system
+- [x] Dispatch cards to all users
+- [ ] Take user input (Started)
+- [ ] Dealer's hand
 - [ ] Win condition
 
 ## Plan
