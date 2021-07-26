@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
     height: "75px",
     display: "flex",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
   card: {
     backgroundColor: "transparent",
@@ -123,6 +123,15 @@ export default function JoinGamePage() {
                     Join Game
                   </StyledButton>
                 </div>
+                <StyledButton
+                  fullWidth="full"
+                  variant="Red"
+                  height={35}
+                  marginTop="5"
+                  href="/"
+                >
+                  Back
+                </StyledButton>
               </div>
             </form>
           </Box>
