@@ -7,6 +7,8 @@ import { apiBaseUrl } from "../../util/constants";
 require("dotenv").config();
 
 export function GamePage({ ...props }) {
+  console.log(apiBaseUrl);
+
   const gameCode = props.match.params.gameCode;
   const location = useLocation();
 
