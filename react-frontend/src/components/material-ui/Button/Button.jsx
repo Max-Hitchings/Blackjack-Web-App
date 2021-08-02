@@ -33,6 +33,9 @@ Button.propTypes = {
   variant: PropTypes.oneOf(["Primary", "Secondary", "Red"]),
   textColor: PropTypes.string,
   borderRadius: PropTypes.number,
+  fontSize: PropTypes.string,
+  height: PropTypes.number,
+  margin: PropTypes.number,
 };
 
 Button.defaultProps = {
