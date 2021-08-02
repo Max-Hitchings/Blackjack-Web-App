@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
     height: "75px",
     display: "flex",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
   card: {
     backgroundColor: "transparent",
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   boldText: {
     fontWeight: 700,
   },
+  FormHelperText: { fontSize: 20 },
 }));
 
 export default function JoinGamePage() {
@@ -41,7 +42,10 @@ export default function JoinGamePage() {
   const history = useHistory();
 
   const [gameCode, setgameCode] = useState("");
-  const [codeValid, setcodeValid] = useState(false);
+  const [codeValid, setcodeValid] = useState({
+    invalid: false,
+    msg: "Invalid Code",
+  });
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -64,7 +68,9 @@ export default function JoinGamePage() {
         pathname: `/game/${gameCode}`,
       });
     } else {
-      setcodeValid(true);
+      response
+        .json()
+        .then((res) => setcodeValid({ invalid: true, msg: res.error }));
     }
   };
 
@@ -100,7 +106,7 @@ export default function JoinGamePage() {
           </Box>
           <Box my={4} textAlign="left">
             <form onSubmit={handleFormSubmit}>
-              <FormControl isInvalid={codeValid}>
+              <FormControl isInvalid={codeValid.invalid}>
                 <FormLabel className={classes.boldText}>Game Code</FormLabel>
                 <TextField
                   type="code"
@@ -109,9 +115,13 @@ export default function JoinGamePage() {
                   placeholder="*****"
                   maxLength="5"
                 />
-                {codeValid ? (
-                  <FormHelperText disabled={true} error={true}>
-                    Invalid Code
+                {codeValid.invalid ? (
+                  <FormHelperText
+                    disabled={true}
+                    error={true}
+                    className={classes.FormHelperText}
+                  >
+                    {codeValid.msg}
                   </FormHelperText>
                 ) : (
                   ""
@@ -123,6 +133,15 @@ export default function JoinGamePage() {
                     Join Game
                   </StyledButton>
                 </div>
+                <StyledButton
+                  fullWidth="full"
+                  variant="Red"
+                  height={35}
+                  marginTop="5"
+                  href="/"
+                >
+                  Back
+                </StyledButton>
               </div>
             </form>
           </Box>
