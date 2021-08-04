@@ -1,7 +1,7 @@
 const express = require("express");
 const apiRouter = express.Router();
 const Games = require("../models/games");
-const { generateCards } = require("../util/generateCards");
+const generateCards = require("../util/generateCards");
 
 apiRouter.get("/", (req, res) => {
   res.status(200).json({ hello: "TEST" });
@@ -59,12 +59,16 @@ apiRouter.post("/join-game", async (req, res) => {
 
     if (result !== null) {
       if (!result.players.filter((p) => p.playerId === playerId).length > 0) {
-        await Games.findOneAndUpdate(
-          { gameCode: gameCode },
-          { $push: { players: { playerId: playerId, cards: [] } } },
-          { useFindAndModify: false }
-        );
-        res.status(202).json({ message: "Successfully joined game" });
+        if (!result.started) {
+          await Games.findOneAndUpdate(
+            { gameCode: gameCode },
+            { $push: { players: { playerId: playerId, cards: [] } } },
+            { useFindAndModify: false }
+          );
+          res.status(202).json({ message: "Successfully joined game" });
+        } else {
+          res.status(400).json({ error: "game has already started" });
+        }
       } else {
         res.status(400).json({ error: "user already in game" });
       }

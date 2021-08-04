@@ -1,4 +1,4 @@
-export const generateCards = () => {
+const generateCards = () => {
   const suits = ["Spades", "Diamonds", "Clubs", "Hearts"];
   const values = [
     "Ace",
@@ -29,10 +29,8 @@ export const generateCards = () => {
   }
 
   for (let i = deck.length - 1; i > 0; i--) {
-    var rand = Math.random() * 51 * decks;
-    console.log(rand);
-
-    let j = Math.floor(rand);
+    var rand = Math.floor(Math.random() * 51 * decks);
+    let j = rand;
     let temp = deck[i];
     deck[i] = deck[j];
     deck[j] = temp;
@@ -40,3 +38,5 @@ export const generateCards = () => {
 
   return deck;
 };
+
+module.exports = generateCards;
