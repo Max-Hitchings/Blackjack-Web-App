@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
 import { StyledButton } from "../material-ui/Button/Button.jsx";
 import { apiBaseUrl } from "../../util/constants";
+import ButtonGroup from "./ButtonGroup.jsx";
 
 require("dotenv").config();
 
@@ -68,6 +69,11 @@ export function GamePage({ ...props }) {
         setGameState("running");
       });
 
+      socket.on("gameEnded", () => {
+        setGameState("holding");
+        setcurrentCardImage("/images/cards/cardBack.png");
+      });
+
       socket.on("disconnected", () => {
         socket.emit("leave-game", { gameCode, playerId });
       });
@@ -106,7 +112,12 @@ export function GamePage({ ...props }) {
 
   const startGame = () => {
     console.log("start game");
-    socket.emit("startGame", { gameCode });
+    socket.emit("startGame", { gameCode, playerId });
+  };
+
+  const endGame = () => {
+    console.log("end game");
+    socket.emit("endGame", { gameCode, playerId });
   };
 
   const HoldingScreen = () => {
@@ -141,6 +152,9 @@ export function GamePage({ ...props }) {
         You are in a game with the code {gameCode}
       </div>
       <StyledButton onClick={pickupCard}>Pickup card</StyledButton>
+      {host ? (
+        <StyledButton onClick={() => endGame()}>END GAME</StyledButton>
+      ) : null}
 
       <img src={currentCardImage} alt="" width="200" height="350" />
       <div style={{ marginTop: "20px" }}>
@@ -148,6 +162,7 @@ export function GamePage({ ...props }) {
           Leave Game
         </StyledButton>
       </div>
+      <ButtonGroup />
       {players.map((player) => {
         return (
           <>

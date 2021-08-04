@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const fetch = require("node-fetch");
 const Games = require("./models/games.js");
+const generateCards = require("./util/generateCards");
 const app = require("express")();
 var cors = require("cors");
 app.use(cors());
@@ -14,12 +15,17 @@ const io = require("socket.io")(http, {
       "http://127.0.0.1:3000",
       "http://localhost:3000",
       "http://192.168.0.15:3000",
+      "https://blackjack-maxhitchings.netlify.app",
+      "https://blackjack.max-hitchings.com",
     ],
     methods: ["GET", "POST"],
   },
 });
 
-mongoose.connect(process.env.DATABASE_URL, {
+// const DB_URL = process.env.MONGO_URL || process.env.DATABASE_URL;
+const URI = process.env.DATABASE_URL;
+// console.log();
+mongoose.connect(URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -61,8 +67,7 @@ io.on("connection", (socket) => {
           game.cards.shift();
         }
       });
-      game.save();
-      console.log(game.players);
+      await game.save();
 
       io.to(gameCode).emit("updatePlayers", { players: game.players });
       callBack(newCard);
@@ -83,14 +88,38 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("startGame", async ({ gameCode }) => {
+  socket.on("startGame", async ({ gameCode, playerId }) => {
     try {
-      await Games.findOneAndUpdate(
-        { gameCode: gameCode },
-        { $set: { started: true } },
-        { useFindAndModify: false }
-      );
-      socket.to(gameCode).emit("gameStarted");
+      var currentGame = await Games.findOne({ gameCode: gameCode });
+
+      if (currentGame.hostId === playerId) {
+        currentGame.started = true;
+        currentGame.save();
+
+        socket.to(gameCode).emit("gameStarted");
+      }
+    } catch (err) {
+      console.error("startGame", err);
+    }
+  });
+
+  socket.on("endGame", async ({ gameCode, playerId }) => {
+    try {
+      var currentGame = await Games.findOne({ gameCode: gameCode });
+
+      if (currentGame.hostId === playerId) {
+        currentGame.started = false;
+        currentGame.cards = generateCards();
+        currentGame.players.forEach((player) => {
+          player.cards = [];
+        });
+
+        currentGame.save();
+        const players = currentGame.players;
+        const hostId = currentGame.hostId;
+        await socket.to(gameCode).emit("updatePlayers", { players, hostId });
+        await socket.to(gameCode).emit("gameEnded");
+      }
     } catch (err) {
       console.error("startGame", err);
     }
