@@ -53,30 +53,7 @@ export default function MainMenu() {
   const history = useHistory();
 
   const handleCreateGame = () => {
-    const requestData = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        playerId: localStorage.getItem("playerId"),
-      }),
-    };
-
-    fetch(`${apiBaseUrl}/api/create-game/`, requestData)
-      .then((response) => {
-        if (response.status === 201) {
-          return response.json();
-        } else {
-          throw new Error();
-        }
-      })
-      .then((responseJson) => {
-        console.log(responseJson);
-
-        history.push({
-          pathname: `/game/${responseJson.gameCode}`,
-        });
-      })
-      .catch((error) => console.error(error));
+    history.push(`/create`);
   };
 
   const handleJoinGame = () => {

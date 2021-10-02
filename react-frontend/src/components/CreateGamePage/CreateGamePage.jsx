@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { StyledButton } from "../material-ui/Button/Button.jsx";
+import { apiBaseUrl } from "../../util/constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,12 +38,11 @@ const useStyles = makeStyles((theme) => ({
   FormHelperText: { fontSize: 20 },
 }));
 
-export default function JoinGamePage() {
+export default function CreateGamePage() {
   const classes = useStyles();
   const history = useHistory();
 
-  const [gameCode, setgameCode] = useState("");
-  const [codeValid, setcodeValid] = useState({
+  const [formValid, setformValid] = useState({
     invalid: false,
     msg: "Invalid Code",
   });
@@ -55,44 +55,36 @@ export default function JoinGamePage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        gameCode: gameCode,
         playerId: localStorage.getItem("playerId"),
         playerNick: playerNick,
       }),
     };
 
     if (playerNick !== "") {
-      const response = await fetch(
-        `${process.env.REACT_APP_EXPRESSJS_URL}/api/join-game`,
-        requestData
-      );
-      if (response.ok) {
-        history.push({
-          pathname: `/game/${gameCode}`,
-        });
-      } else {
-        response
-          .json()
-          .then((res) => setcodeValid({ invalid: true, msg: res.error }));
-      }
-    } else {
-      setcodeValid({ invalid: true, msg: "Enter a Name" });
-    }
-  };
+      fetch(`${apiBaseUrl}/api/create-game/`, requestData)
+        .then((response) => {
+          if (response.status === 201) {
+            return response.json();
+          } else {
+            throw new Error();
+          }
+        })
+        .then((responseJson) => {
+          console.log(responseJson);
 
-  const handleGameCodeChange = (event) => {
-    setgameCode(event.target.value);
+          history.push({
+            pathname: `/game/${responseJson.gameCode}`,
+          });
+        })
+        .catch((error) => console.error(error));
+    } else {
+      setformValid({ invalid: true, msg: "Enter a Name" });
+    }
   };
 
   const handlePlayerNickChange = (event) => {
     setplayerNick(event.target.value);
   };
-
-  useEffect(() => {
-    return () => {
-      console.log("bye");
-    };
-  }, []);
 
   return (
     <>
@@ -116,7 +108,7 @@ export default function JoinGamePage() {
           </Box>
           <Box my={4} textAlign="left">
             <form onSubmit={handleFormSubmit}>
-              <FormControl isInvalid={codeValid.invalid}>
+              <FormControl isInvalid={formValid.invalid}>
                 <FormLabel className={classes.boldText}>Name</FormLabel>
                 <TextField
                   onChange={handlePlayerNickChange}
@@ -125,21 +117,14 @@ export default function JoinGamePage() {
                   maxLength="10"
                   style={{ marginBottom: "10px" }}
                 />
-                <FormLabel className={classes.boldText}>Game Code</FormLabel>
-                <TextField
-                  type="code"
-                  onChange={handleGameCodeChange}
-                  value={gameCode}
-                  placeholder="*****"
-                  maxLength="5"
-                />
-                {codeValid.invalid ? (
+
+                {formValid.invalid ? (
                   <FormHelperText
                     disabled={true}
                     error={true}
                     className={classes.FormHelperText}
                   >
-                    {codeValid.msg}
+                    {formValid.msg}
                   </FormHelperText>
                 ) : (
                   ""
@@ -148,7 +133,7 @@ export default function JoinGamePage() {
               <div>
                 <div className={classes.buttonContainer}>
                   <StyledButton fullWidth="full" type="submit">
-                    Join Game
+                    Create Game
                   </StyledButton>
                 </div>
                 <StyledButton

@@ -126,7 +126,7 @@ export function GamePage({ ...props }) {
         <h1>holding screen</h1>
         <h1>code: {gameCode}</h1>
         {players.map((player) => (
-          <h3>{player.playerId}</h3>
+          <h3>{player.playerNick}</h3>
         ))}
         {host ? (
           <StyledButton onClick={startGame}>Start Game</StyledButton>
@@ -166,7 +166,7 @@ export function GamePage({ ...props }) {
       {players.map((player) => {
         return (
           <>
-            <h3>{player.playerId}</h3>
+            <h3>{player.playerNick}</h3>
             {player.cards.map((card) => (
               <img
                 src={`/images/cards/${card.Suit}/${card.Value}.png`}
