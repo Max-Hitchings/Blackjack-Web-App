@@ -13,6 +13,7 @@ const gameSchema = new mongoose.Schema({
   players: [
     {
       playerId: { type: String, required: true },
+      playerNick: { type: String, required: true },
       cards: { type: Array, required: true, default: [] },
     },
   ],
