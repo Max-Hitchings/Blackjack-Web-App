@@ -103,7 +103,7 @@ export default function CreateGamePage() {
               component="h1"
               className={classes.boldText}
             >
-              Join Game
+              Create Game
             </Typography>
           </Box>
           <Box my={4} textAlign="left">
