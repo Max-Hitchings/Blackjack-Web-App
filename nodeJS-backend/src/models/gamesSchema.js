@@ -17,6 +17,10 @@ const gameSchema = new mongoose.Schema({
       cards: { type: Array, required: true, default: [] },
     },
   ],
+  activePlayer: {
+    id: { type: String, default: "" },
+    index: { type: Number, default: 0 },
+  },
   hostId: { type: String, required: true },
   started: { type: Boolean, required: true, default: false },
 });
