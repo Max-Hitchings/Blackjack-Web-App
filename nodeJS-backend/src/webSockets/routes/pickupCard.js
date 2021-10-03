@@ -1,8 +1,5 @@
-const express = require("express");
 const Games = require("../../models/gamesSchema.js");
-const generateCards = require("../../util/generateCards");
-const app = require("express")();
-var cors = require("cors");
+import updatePlayers from "../../util/updatePlayers.js";
 
 export const pickupCard = async (io, { gameCode, playerId }, callBack) => {
   try {
@@ -12,13 +9,13 @@ export const pickupCard = async (io, { gameCode, playerId }, callBack) => {
     //   { useFindAndModify: false }
     // );
 
-    let game = await Games.findOne({ gameCode: gameCode });
-    const newCard = game.cards[0];
-    game.players.forEach((player, index) => {
+    let currentGame = await Games.findOne({ gameCode: gameCode });
+    const newCard = currentGame.cards[0];
+    currentGame.players.forEach((player, index) => {
       if (player.playerId === playerId) {
-        game.players[index].cards.push({
-          Suit: game.cards[0].Suit,
-          Value: game.cards[0].Value,
+        currentGame.players[index].cards.push({
+          Suit: currentGame.cards[0].Suit,
+          Value: currentGame.cards[0].Value,
         });
 
         // game.players[index].cards[game.players[index].cards.length] = {
@@ -26,13 +23,18 @@ export const pickupCard = async (io, { gameCode, playerId }, callBack) => {
         //   value: "game.cards[0].value",
         // };
 
-        game.cards.shift();
+        currentGame.cards.shift();
       }
     });
-    await game.save();
+    await currentGame.save();
 
-    io.to(gameCode).emit("updatePlayers", { players: game.players });
-    callBack(newCard);
+    updatePlayers(socket, gameCode, {
+      players: currentGame.players,
+      hostId: currentGame.hostId,
+      activePlayerId: currentGame.activePlayer.id,
+    });
+
+    if (callBack) callBack(newCard);
   } catch (err) {
     console.error(err);
   }

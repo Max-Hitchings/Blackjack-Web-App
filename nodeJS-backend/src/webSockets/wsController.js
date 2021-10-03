@@ -1,6 +1,10 @@
 const Games = require("../models/gamesSchema.js");
 
+import generateCards from "../util/generateCards.js";
+import updatePlayers from "../util/updatePlayers.js";
+
 import { pickupCard } from "./routes/pickupCard.js";
+import { startGame } from "./routes/startGame.js";
 
 export default function wsController(http) {
   const io = require("socket.io")(http, {
@@ -27,25 +31,43 @@ export default function wsController(http) {
 
       const result = await Games.findOne({ gameCode: gameCode });
       if (result !== null) {
-        const players = result.players;
-        const hostId = result.hostId;
-        io.to(gameCode).emit("updatePlayers", { players, hostId });
+        updatePlayers(socket, gameCode, {
+          players: result.players,
+          hostId: result.hostId,
+          activePlayerId: result.activePlayer.id,
+        });
       }
     });
 
     socket.on("startGame", async ({ gameCode, playerId }) => {
-      try {
-        var currentGame = await Games.findOne({ gameCode: gameCode });
+      startGame(socket, { gameCode, playerId });
+    });
 
-        if (currentGame.hostId === playerId) {
-          currentGame.started = true;
-          currentGame.save();
+    socket.on("hit", async ({ gameCode, playerId }, callBack) => {
+      callBack();
+    });
 
-          socket.to(gameCode).emit("gameStarted");
-        }
-      } catch (err) {
-        console.error("startGame", err);
+    socket.on("stand", async ({ gameCode, playerId }, callBack) => {
+      callBack();
+    });
+
+    socket.on("endTurn", async ({ gameCode, playerId }) => {
+      var currentGame = await Games.findOne({ gameCode: gameCode });
+      console.log("end turn");
+
+      if (currentGame.activePlayer.index < currentGame.players.length - 1) {
+        currentGame.activePlayer.id =
+          currentGame.players[currentGame.activePlayer.index + 1].playerId;
+        currentGame.activePlayer.index++;
+
+        await currentGame.save();
       }
+
+      updatePlayers(socket, gameCode, {
+        players: currentGame.players,
+        hostId: currentGame.hostId,
+        activePlayerId: currentGame.activePlayer.id,
+      });
     });
 
     socket.on("endGame", async ({ gameCode, playerId }) => {
@@ -60,9 +82,13 @@ export default function wsController(http) {
           });
 
           currentGame.save();
-          const players = currentGame.players;
-          const hostId = currentGame.hostId;
-          await socket.to(gameCode).emit("updatePlayers", { players, hostId });
+
+          updatePlayers(socket, gameCode, {
+            players: currentGame.players,
+            hostId: currentGame.hostId,
+            activePlayerId: currentGame.activePlayer.id,
+          });
+
           await socket.to(gameCode).emit("gameEnded");
         }
       } catch (err) {
@@ -78,9 +104,12 @@ export default function wsController(http) {
           // result.players.forEach((player) => {
           //   players.push(player.playerId);
           // });
-          const players = result.players;
-          const hostId = result.hostId;
-          io.to(socket.gameCode).emit("updatePlayers", { players, hostId });
+
+          updatePlayers(socket, socket.gameCode, {
+            players: result.players,
+            hostId: result.hostId,
+            activePlayerId: result.activePlayer.id,
+          });
         }
       }
     });

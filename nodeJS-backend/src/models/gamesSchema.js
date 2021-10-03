@@ -8,7 +8,12 @@ const gameSchema = new mongoose.Schema({
     unique: true,
     dropDups: true,
   },
-  cards: { type: Array, required: true },
+  cards: [
+    {
+      Value: { type: String, required: true },
+      Suit: { type: String, required: true },
+    },
+  ],
   // players: { type: Array, required: true, default: [] },
   players: [
     {
