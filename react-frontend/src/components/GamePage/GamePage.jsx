@@ -4,20 +4,27 @@ import io from "socket.io-client";
 import { StyledButton } from "../material-ui/Button/Button.jsx";
 import { apiBaseUrl } from "../../util/constants";
 import ButtonGroup from "./ButtonGroup.jsx";
+import { makeStyles } from "@material-ui/core/styles";
 
 require("dotenv").config();
 
 export function GamePage({ ...props }) {
-  console.log(apiBaseUrl);
-
   const gameCode = props.match.params.gameCode;
   const location = useLocation();
+  const classes = useStyles();
 
   const socket = io(apiBaseUrl);
 
   const [gameState, setGameState] = useState("holding");
   const [players, setPlayers] = useState([]);
+  const [activePlayer, setActivePlayer] = useState("");
   const [host, setHost] = useState(false);
+  const [currentCardImage, setcurrentCardImage] = useState(
+    "/images/cards/cardBack.png"
+  );
+  const [myPlayerId] = useState(localStorage.getItem("playerId"));
+  const [myTurn, setmyTurn] = useState(true);
+  const [doubleDownEnabled, setdoubleDownEnabled] = useState(true);
   // const socket = io(http://127.0.0.1:4040/");
 
   const checkHost = () => {};
@@ -38,11 +45,6 @@ export function GamePage({ ...props }) {
     }
   }, []);
 
-  const [currentCardImage, setcurrentCardImage] = useState(
-    "/images/cards/cardBack.png"
-  );
-  const [playerId, setplayerId] = useState(localStorage.getItem("playerId"));
-
   useEffect(() => {
     console.log(host);
   }, [host]);
@@ -58,15 +60,34 @@ export function GamePage({ ...props }) {
 
       socket.emit("joinGame", { gameCode });
 
-      socket.on("updatePlayers", ({ players, hostId }) => {
+      socket.on("updatePlayers", ({ players, hostId, activePlayerId }) => {
+        console.log(
+          `update players activeplayer:${activePlayerId} players:${players}`
+        );
         setPlayers([...players]);
+        setActivePlayer(activePlayerId);
         if (hostId === localStorage.getItem("playerId")) {
           setHost(true);
         }
+
+        if (activePlayerId === myPlayerId) {
+          setmyTurn(true);
+          console.log("match");
+          console.log(activePlayerId);
+        } else {
+          setmyTurn(false);
+          console.log("no match");
+          console.log(activePlayerId);
+        }
       });
 
-      socket.on("gameStarted", () => {
-        setGameState("running");
+      socket.on("gameStarted", async () => {
+        // console.log("pickup");
+        // socket.emit("pickupCard", { gameCode, playerId }, (res) => {
+        //   socket.emit("pickupCard", { gameCode, playerId });
+        // });
+        setdoubleDownEnabled(true);
+        await setGameState("running");
       });
 
       socket.on("gameEnded", () => {
@@ -75,7 +96,7 @@ export function GamePage({ ...props }) {
       });
 
       socket.on("disconnected", () => {
-        socket.emit("leave-game", { gameCode, playerId });
+        socket.emit("leave-game", { gameCode, playerId: myPlayerId });
       });
 
       socket.on("connect_error", () => {
@@ -105,19 +126,41 @@ export function GamePage({ ...props }) {
   };
 
   const pickupCard = () => {
-    socket.emit("pickupCard", { gameCode, playerId }, (res) => {
+    socket.emit("pickupCard", { gameCode, playerId: myPlayerId }, (res) => {
       setcurrentCardImage(`/images/cards/${res.Suit}/${res.Value}.png`);
     });
   };
 
   const startGame = () => {
     console.log("start game");
-    socket.emit("startGame", { gameCode, playerId });
+    socket.emit("startGame", { gameCode, playerId: myPlayerId });
   };
 
   const endGame = () => {
     console.log("end game");
-    socket.emit("endGame", { gameCode, playerId });
+    socket.emit("endGame", { gameCode, playerId: myPlayerId });
+  };
+
+  const hit = () => {
+    socket.emit("hit", { gameCode, myPlayerId }, (res) => {
+      setdoubleDownEnabled(false);
+      console.log("shusuhsds");
+      console.log(doubleDownEnabled);
+      console.log(myTurn);
+      console.log(myTurn && doubleDownEnabled);
+    });
+  };
+
+  const stand = () => {
+    // socket.emit("stand", { gameCode, myPlayerId }, (res) => {
+    //   socket.emit("endTurn", { gameCode, myPlayerId });
+    // });
+    console.log("end turn");
+    socket.emit("endTurn", { gameCode, myPlayerId });
+  };
+
+  const doubleDown = () => {
+    socket.emit("doubleDown", { gameCode, myPlayerId }, (res) => {});
   };
 
   const HoldingScreen = () => {
@@ -162,10 +205,20 @@ export function GamePage({ ...props }) {
           Leave Game
         </StyledButton>
       </div>
-      <ButtonGroup />
+      <ButtonGroup
+        myTurn={myTurn}
+        hit={hit}
+        stand={stand}
+        doubleDown={doubleDown}
+        doubleDownEnabled={doubleDownEnabled}
+      />
       {players.map((player) => {
         return (
-          <>
+          <div
+            className={
+              player.playerId === activePlayer ? classes.activeTurn : ""
+            }
+          >
             <h3>{player.playerNick}</h3>
             {player.cards.map((card) => (
               <img
@@ -174,7 +227,7 @@ export function GamePage({ ...props }) {
                 height="175"
               />
             ))}
-          </>
+          </div>
         );
       })}
     </div>
@@ -186,3 +239,10 @@ export function GamePage({ ...props }) {
     <Game />
   ) : null;
 }
+
+const useStyles = makeStyles((theme) => ({
+  root: {},
+  activeTurn: {
+    backgroundColor: "yellow",
+  },
+}));

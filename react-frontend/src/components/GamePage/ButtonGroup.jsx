@@ -40,8 +40,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonGroup() {
+export default function ButtonGroup({
+  myTurn,
+  hit,
+  stand,
+  doubleDown,
+  doubleDownEnabled,
+}) {
   const classes = useStyles();
+
+  var doubleDownEnabledCalc = true;
+  // if (!myTurn) {
+  //   console.log("okay bud");
+  // }
+  // if (!doubleDownEnabled) {
+  //   if (!myTurn) {
+  //     doubleDownEnabledCalc = true;
+  //   }
+  // }
 
   return (
     <div className={classes.ButtonGroup}>
@@ -51,6 +67,8 @@ export default function ButtonGroup() {
           p={0}
           variant="Secondary"
           fontSize="70px"
+          disabled={!myTurn}
+          onClick={hit}
         >
           HIT
         </StyledButton>
@@ -61,10 +79,18 @@ export default function ButtonGroup() {
           p={0}
           variant="Red"
           fontSize="35px"
+          disabled={!doubleDownEnabledCalc}
+          onClick={doubleDown}
         >
           Double Down
         </StyledButton>
-        <StyledButton className={classes.roundButton} p={0} fontSize="45px">
+        <StyledButton
+          className={classes.roundButton}
+          p={0}
+          fontSize="45px"
+          disabled={!myTurn}
+          onClick={stand}
+        >
           Stand
         </StyledButton>
       </div>
