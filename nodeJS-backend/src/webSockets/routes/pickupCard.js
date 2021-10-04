@@ -28,7 +28,7 @@ export const pickupCard = async (io, { gameCode, playerId }, callBack) => {
     });
     await currentGame.save();
 
-    updatePlayers(socket, gameCode, {
+    updatePlayers(io, gameCode, {
       players: currentGame.players,
       hostId: currentGame.hostId,
       activePlayerId: currentGame.activePlayer.id,

@@ -1,7 +1,7 @@
 const Games = require("../../models/gamesSchema.js");
 import updatePlayers from "../../util/updatePlayers.js";
 
-export const startGame = async (socket, { gameCode, playerId }) => {
+export const startGame = async (socket, io, { gameCode, playerId }) => {
   try {
     var currentGame = await Games.findOne({ gameCode: gameCode });
 
@@ -28,7 +28,7 @@ export const startGame = async (socket, { gameCode, playerId }) => {
 
       socket.to(gameCode).emit("gameStarted");
 
-      updatePlayers(socket, gameCode, {
+      updatePlayers(io, gameCode, {
         players: currentGame.players,
         hostId: currentGame.hostId,
         activePlayerId: currentGame.activePlayer.id,

@@ -31,7 +31,7 @@ export default function wsController(http) {
 
       const result = await Games.findOne({ gameCode: gameCode });
       if (result !== null) {
-        updatePlayers(socket, gameCode, {
+        updatePlayers(io, gameCode, {
           players: result.players,
           hostId: result.hostId,
           activePlayerId: result.activePlayer.id,
@@ -40,7 +40,7 @@ export default function wsController(http) {
     });
 
     socket.on("startGame", async ({ gameCode, playerId }) => {
-      startGame(socket, { gameCode, playerId });
+      startGame(socket, io, { gameCode, playerId });
     });
 
     socket.on("hit", async ({ gameCode, playerId }, callBack) => {
@@ -63,7 +63,7 @@ export default function wsController(http) {
         await currentGame.save();
       }
 
-      updatePlayers(socket, gameCode, {
+      updatePlayers(io, gameCode, {
         players: currentGame.players,
         hostId: currentGame.hostId,
         activePlayerId: currentGame.activePlayer.id,
@@ -83,7 +83,7 @@ export default function wsController(http) {
 
           currentGame.save();
 
-          updatePlayers(socket, gameCode, {
+          updatePlayers(io, gameCode, {
             players: currentGame.players,
             hostId: currentGame.hostId,
             activePlayerId: currentGame.activePlayer.id,
@@ -105,7 +105,7 @@ export default function wsController(http) {
           //   players.push(player.playerId);
           // });
 
-          updatePlayers(socket, socket.gameCode, {
+          updatePlayers(io, socket.gameCode, {
             players: result.players,
             hostId: result.hostId,
             activePlayerId: result.activePlayer.id,

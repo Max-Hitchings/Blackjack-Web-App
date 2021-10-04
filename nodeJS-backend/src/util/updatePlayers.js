@@ -1,9 +1,9 @@
 export default function updatePlayers(
-  socket,
+  io,
   gameCode,
   { players, hostId, activePlayerId }
 ) {
-  socket.to(gameCode).emit("updatePlayers", {
+  io.to(gameCode).emit("updatePlayers", {
     players: players,
     hostId: hostId,
     activePlayerId: activePlayerId,
