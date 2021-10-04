@@ -1,6 +1,6 @@
 # Blackjack Web App
 
-## Stack
+## Tech-Stack
 
 | Tech       | Host    |
 | ---------- | ------- |
